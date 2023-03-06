@@ -1,0 +1,10 @@
+﻿{
+    "profiles": {
+      "MadEye (Package)": {
+        "commandName": "MsixPackage"
+      },
+      "MadEye (Unpackaged)": {
+        "commandName": "Project"
+      }
+    }
+}
