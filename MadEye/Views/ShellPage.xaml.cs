@@ -97,6 +97,8 @@ public sealed partial class ShellPage : Page
 
 
 
+    //User Defined Functiions
+
 
     private void NavigationViewControl_PaneClosing(NavigationView sender, object args)
     {
@@ -138,4 +140,7 @@ public sealed partial class ShellPage : Page
             Page_Recware.Text = "E: " + ex;
         }
     }
+
+
+
 }

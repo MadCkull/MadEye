@@ -1,6 +1,7 @@
 ﻿using MadEye.ViewModels;
 
 using Microsoft.UI.Xaml.Controls;
+using Windows.Storage;
 
 namespace MadEye.Views;
 
@@ -17,4 +18,11 @@ public sealed partial class SettingsPage : Page
         ViewModel = App.GetService<SettingsViewModel>();
         InitializeComponent();
     }
+
+
+
+
+    //User Defined Functions
+
+    
 }

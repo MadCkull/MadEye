@@ -48,6 +48,15 @@
                             <xaml:ElementTheme>Default</xaml:ElementTheme>
                         </RadioButton.CommandParameter>
                     </RadioButton>
+
+                    <Slider
+                        Name="OpacitySlider" 
+                        Minimum="0" 
+                        Maximum="1" 
+                        Value="1" />
+
+
+
                 </StackPanel>
             </StackPanel>
 

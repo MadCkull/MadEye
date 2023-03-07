@@ -10,8 +10,8 @@
     MinHeight="530"
     PersistenceId="MainWindow"
     mc:Ignorable="d">
-    
+
     <windowex:WindowEx.Backdrop>
-        <windowex:AcrylicSystemBackdrop/>
+        <windowex:AcrylicSystemBackdrop />
     </windowex:WindowEx.Backdrop>
 </windowex:WindowEx>
