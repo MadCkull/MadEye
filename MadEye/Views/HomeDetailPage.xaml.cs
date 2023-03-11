@@ -33,6 +33,7 @@ public sealed partial class HomeDetailPage : Page
         get;
     }
 
+
     public HomeDetailPage()
     {
         ViewModel = App.GetService<HomeDetailViewModel>();
@@ -40,6 +41,9 @@ public sealed partial class HomeDetailPage : Page
 
         GetChromeHistory();
     }
+
+    #region Template Code (Do NOT Modify)
+
 
     protected override void OnNavigatedTo(NavigationEventArgs e)
     {
@@ -61,9 +65,12 @@ public sealed partial class HomeDetailPage : Page
         }
     }
 
+    #endregion
 
-    #region User Defined:
+#region User Defined:
 
+
+    #region Internet History Module
 
     private const string ConnectionStr = @"Data Source=D:\Other\History";
     private const int BatchSize = 50;
@@ -155,6 +162,9 @@ public sealed partial class HomeDetailPage : Page
     {
         FetchHistory();
     }
-
     #endregion
+
+
+
+#endregion
 }

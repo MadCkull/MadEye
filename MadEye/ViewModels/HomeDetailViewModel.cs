@@ -9,9 +9,9 @@ namespace MadEye.ViewModels;
 public class HomeDetailViewModel : ObservableRecipient, INavigationAware
 {
     private readonly ISampleDataService _sampleDataService;
-    private SampleOrder? _item;
+    private ModuleProperties? _item;
 
-    public SampleOrder? Item
+    public ModuleProperties? Item
     {
         get => _item;
         set => SetProperty(ref _item, value);
@@ -27,7 +27,7 @@ public class HomeDetailViewModel : ObservableRecipient, INavigationAware
         if (parameter is long orderID)
         {
             var data = await _sampleDataService.GetContentGridDataAsync();
-            Item = data.First(i => i.OrderID == orderID);
+            Item = data.First(i => i.ModuleID == orderID);
         }
     }
 

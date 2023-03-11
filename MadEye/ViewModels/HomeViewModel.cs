@@ -21,14 +21,14 @@ public class HomeViewModel : ObservableRecipient, INavigationAware
         get;
     }
 
-    public ObservableCollection<SampleOrder> Source { get; } = new ObservableCollection<SampleOrder>();
+    public ObservableCollection<ModuleProperties> Source { get; } = new ObservableCollection<ModuleProperties>();
 
     public HomeViewModel(INavigationService navigationService, ISampleDataService sampleDataService)
     {
         _navigationService = navigationService;
         _sampleDataService = sampleDataService;
 
-        ItemClickCommand = new RelayCommand<SampleOrder>(OnItemClick);
+        ItemClickCommand = new RelayCommand<ModuleProperties>(OnItemClick);
     }
 
     public async void OnNavigatedTo(object parameter)
@@ -47,12 +47,12 @@ public class HomeViewModel : ObservableRecipient, INavigationAware
     {
     }
 
-    private void OnItemClick(SampleOrder? clickedItem)
+    private void OnItemClick(ModuleProperties? clickedItem)
     {
         if (clickedItem != null)
         {
             _navigationService.SetListDataItemForNextConnectedAnimation(clickedItem);
-            _navigationService.NavigateTo(typeof(HomeDetailViewModel).FullName!, clickedItem.OrderID);
+            _navigationService.NavigateTo(typeof(HomeDetailViewModel).FullName!, clickedItem.ModuleID);
         }
     }
 }

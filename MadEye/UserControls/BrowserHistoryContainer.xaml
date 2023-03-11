@@ -37,16 +37,18 @@
         </Ellipse>
 
         <TextBlock x:Name="Site_Title"
-                   IsTextSelectionEnabled="True"
                    Grid.Column="1"
+                   IsTextSelectionEnabled="True"
+                   FontWeight="SemiBold"
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Margin="15,2,2,2" />
 
         <HyperlinkButton x:Name="Site_Link"
                          Grid.Column="1"
+                         FontSize="11"
                          Click="Site_Link_Click"
-                         Margin="10,20,5,0" />
+                         Margin="10,18,5,0" />
 
         <TextBlock x:Name="Site_Time"
                    Grid.Column="2"

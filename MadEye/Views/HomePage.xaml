@@ -9,19 +9,21 @@
     xmlns:models="using:MadEye.Core.Models"
     mc:Ignorable="d">
 
-    <Grid x:Name="ContentArea">
+    <Grid x:Name="ContentArea" Margin="0,0,0,30" >
         <controls:AdaptiveGridView
             animations:Connected.ListItemElementName="itemThumbnail"
             animations:Connected.ListItemKey="animationKeyContentGrid"
-            DesiredWidth="180"
+            VerticalAlignment="Center"
             ItemHeight="160"
             IsItemClickEnabled="True"
             ItemClickCommand="{x:Bind ViewModel.ItemClickCommand}"
             ItemsSource="{x:Bind ViewModel.Source,Mode=OneWay}"
+            Loaded="AdaptiveGridView_Loaded"
+            SizeChanged="AdaptiveGridView_Loaded"
             SelectionMode="None"
-            StretchContentForSingleRow="False">
+            StretchContentForSingleRow="False" >
             <controls:AdaptiveGridView.ItemTemplate>
-                <DataTemplate x:DataType="models:SampleOrder">
+                <DataTemplate x:DataType="models:ModuleProperties">
                     <Grid
                         x:Name="itemThumbnail"
                         Padding="{StaticResource XSmallLeftTopRightBottomMargin}">
@@ -33,18 +35,12 @@
                                 Margin="{StaticResource XXSmallTopMargin}"
                                 HorizontalAlignment="Center"
                                 Style="{ThemeResource BodyTextStyle}"
-                                Text="{x:Bind Company}" />
+                                Text="{x:Bind Module}" />
                         </StackPanel>
                     </Grid>
                 </DataTemplate>
             </controls:AdaptiveGridView.ItemTemplate>
         </controls:AdaptiveGridView>
-
-
-        <Grid>
-            <Button x:Name="Btn_Tst" Content="Test Button" Click="Button_Click" VerticalAlignment="Bottom"/>
-            
-
-        </Grid>
     </Grid>
+    
 </Page>
