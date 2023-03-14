@@ -23,8 +23,10 @@ using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Microsoft.Data.Sqlite;
 using Microsoft.UI.Windowing;
+using MadEye.GlobalClasses;
 
 namespace MadEye.Views;
+
 
 public sealed partial class HomeDetailPage : Page
 {
@@ -38,19 +40,18 @@ public sealed partial class HomeDetailPage : Page
     {
         
         InitializeComponent();
+
         ViewModel = App.GetService<HomeDetailViewModel>();
         DataContext = ViewModel;
-        ViewModel.HistoryStackContainer = HistoryStackContainer;
-        ViewModel.HistoryLoadButton = HistoryLoadButton;
         
         ViewModel.TotalEntries = TotalEntries;
 
-
-        ViewModel.GetChromeHistory();
-        ViewModel.FetchHistory();
+        InitilizedModule();
     }
 
-    #region Template Code (Do NOT Modify)
+
+
+#region > Template Code (Do NOT Modify)
 
 
     protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -75,22 +76,48 @@ public sealed partial class HomeDetailPage : Page
 
     #endregion
 
-    #region User Defined:
 
 
-    #region Internet History Module
+#region > User Defined:
 
+    #region - Global Values:
 
+    public string SelectedDate = ((ShellPage)App.MainWindow.Content).Selected_Date;
     readonly string TotalEntries = "0";
 
+
+    private void InitilizedModule()
+    {
+        long ClickedModule = MadEye.GlobalClasses.GlobalSingletonClass.Instance.HomeModuleSelectedModuleID;
+
+        if(ClickedModule == 10646)
+        {
+            HistoryModuleInitialize();
+        }
+    }
+
+    #endregion
+
+    #region - Internet History Module:
+
+    public void HistoryModuleInitialize()
+    {
+        BrowserHistoryModule.Visibility = Visibility.Visible;
+        ViewModel.HistoryStackContainer = HistoryStackContainer;
+        ViewModel.HistoryLoadButton = HistoryLoadButton;
+        
+        ViewModel.GetChromeHistory();
+        ViewModel.FetchHistory();
+    }
 
     private void HistoryLoadButton_Click(object sender, RoutedEventArgs e)
     {
         ViewModel.FetchHistory();
     }
+
     #endregion
 
-
-
 #endregion
+
+
 }

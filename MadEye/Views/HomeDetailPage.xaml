@@ -69,7 +69,7 @@
 
                         <StackPanel x:Name="orderDateGroup" Margin="{StaticResource SmallTopMargin}">
                             <TextBlock Style="{ThemeResource SubtitleTextBlockStyle}" Text="Date" />
-                            <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Text="{x:Bind ViewModel.Item.SelectedDate}" />
+                            <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Text="{x:Bind SelectedDate}" />
                         </StackPanel>
                     </StackPanel>
 
@@ -85,16 +85,22 @@
 
 
                 <!-- Shows Browser History-->
-                <ScrollViewer >
-                    <StackPanel
+                <StackPanel 
+                        x:Name="BrowserHistoryModule"
+                        Visibility="Collapsed" >
+                    
+                    <ScrollViewer >
+                        <StackPanel
                         x:Name="HistoryStackContainer" 
                         Orientation="Vertical" 
                         Margin="10, 10, 10, 10" 
                         HorizontalAlignment="Stretch" 
                         DataContext="{Binding HomeDetailViewModel}" />
-                </ScrollViewer>
+                    </ScrollViewer>
+                    <Button x:Name="HistoryLoadButton" Content="Load More" Click="HistoryLoadButton_Click" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="10"/>
+                </StackPanel>
+                
 
-                <Button x:Name="HistoryLoadButton" Content="Load More" Click="HistoryLoadButton_Click" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="10"/>
 
 
             </StackPanel>

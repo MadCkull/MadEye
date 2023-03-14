@@ -1,4 +1,7 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.IO;
 using System.Reflection.Metadata;
 using System.Windows.Input;
 
@@ -10,6 +13,12 @@ using MadEye.Contracts.ViewModels;
 using MadEye.Core.Contracts.Services;
 using MadEye.Core.Models;
 using MadEye.Views;
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
+using Microsoft.Xaml.Interactivity;
+using Windows.ApplicationModel.DataTransfer;
+
+using MadEye.GlobalClasses;
 
 namespace MadEye.ViewModels;
 
@@ -46,12 +55,17 @@ public class HomeViewModel : ObservableRecipient, INavigationAware
 
     public void OnNavigatedFrom()
     {
+
     }
 
+    
     private void OnItemClick(ModuleProperties? clickedItem)
     {
+
         if (clickedItem != null)
         {
+            GlobalClasses.GlobalSingletonClass.Instance.HomeModuleSelectedModuleID = clickedItem.ModuleID;
+
             _navigationService.SetListDataItemForNextConnectedAnimation(clickedItem);
             _navigationService.NavigateTo(typeof(HomeDetailViewModel).FullName!, clickedItem.ModuleID);
         }
@@ -61,4 +75,6 @@ public class HomeViewModel : ObservableRecipient, INavigationAware
             //My Code *.*
         }
     }
+    
+
 }

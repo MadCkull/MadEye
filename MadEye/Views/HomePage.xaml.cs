@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.WinUI.UI.Controls;
+using MadEye.Core.Models;
 using MadEye.ViewModels;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -18,7 +19,6 @@ public sealed partial class HomePage : Page
     {
         ViewModel = App.GetService<HomeViewModel>();
         InitializeComponent();
-        
     }
 
 
@@ -44,5 +44,4 @@ public sealed partial class HomePage : Page
     }
 
 #endregion
-
 }

@@ -9,7 +9,6 @@ public class ModuleProperties
         get; set;
     }
 
-
     public DateTime SelectedDate
     {
         get; set;

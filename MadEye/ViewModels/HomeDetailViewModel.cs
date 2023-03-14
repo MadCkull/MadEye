@@ -7,6 +7,7 @@ using MadEye.Views;
 using Microsoft.Data.Sqlite;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Windows.ApplicationModel.DataTransfer;
 
 namespace MadEye.ViewModels;
 
@@ -21,7 +22,7 @@ public class HomeDetailViewModel : ObservableRecipient, INavigationAware
         set => SetProperty(ref _item, value);
     }
 
-
+    
     public HomeDetailViewModel(ISampleDataService sampleDataService)
     {
         _sampleDataService = sampleDataService;
@@ -55,9 +56,10 @@ public class HomeDetailViewModel : ObservableRecipient, INavigationAware
 
 
 
-    public static DateTimeOffset DataParse(string dateStr)
+    public static DateTimeOffset DataParse()
     {
-        var dateParts = dateStr.Split('\\');
+        var selectedDate = ((ShellPage)App.MainWindow.Content).Selected_Date;
+        var dateParts = selectedDate.Split('\\');
         var day = int.Parse(dateParts[0]);
         var month = int.Parse(dateParts[1]);
         var year = int.Parse(dateParts[2]);
@@ -70,7 +72,7 @@ public class HomeDetailViewModel : ObservableRecipient, INavigationAware
 
     public void GetChromeHistory()
     {
-        DateTimeOffset date = DataParse("12\\3\\2023");
+        DateTimeOffset date = DataParse();
 
         using var connection = new SqliteConnection(ConnectionStr);
         connection.Open();
@@ -81,7 +83,7 @@ public class HomeDetailViewModel : ObservableRecipient, INavigationAware
         var endOfDayUnixTime = (endOfDay.UtcDateTime - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalSeconds;
         var startOfDayChromeEpoch = (startOfDayUnixTime + 11644473600) * 1000000;
         var endOfDayChromeEpoch = (endOfDayUnixTime + 11644473600) * 1000000;
-        var query = $"SELECT title, url, last_visit_time FROM urls WHERE last_visit_time BETWEEN {startOfDayChromeEpoch} AND {endOfDayChromeEpoch}";
+        var query = $"SELECT title, url, last_visit_time FROM urls WHERE last_visit_time BETWEEN {startOfDayChromeEpoch} AND {endOfDayChromeEpoch} ORDER BY last_visit_time ASC";
 
         using var command = new SqliteCommand(query, connection);
         using var reader = command.ExecuteReader();
@@ -142,10 +144,16 @@ public class HomeDetailViewModel : ObservableRecipient, INavigationAware
 
     private void Update_HistoryLoadButton()
     {
-        if (loadedCount == siteTitle.Count)
+        HistoryLoadButton.IsEnabled = false;
+
+        if (loadedCount == 0)
         {
-            HistoryLoadButton.Content = "No More History";
-            HistoryLoadButton.IsEnabled = false;
+            HistoryLoadButton.Content = "Data Not Found";
+            
+        }
+        else if (loadedCount == siteTitle.Count)
+        {
+            HistoryLoadButton.Content = "No More Data";
         }
         else
         {

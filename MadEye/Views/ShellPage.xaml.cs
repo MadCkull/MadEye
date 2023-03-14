@@ -148,15 +148,6 @@ public sealed partial class ShellPage : Page
         //Get the first (and only) selected date
         var selectedDate = sender.SelectedDates.FirstOrDefault();
 
-        var Selected_Date = $"{selectedDate.Day}\\{selectedDate.Month}\\{selectedDate.Year}";
-
-
-
-        var package = new DataPackage();
-        package.SetText(Selected_Date);
-        Clipboard.SetContent(package);
-
-
-
+        Selected_Date = $"{selectedDate.Day}\\{selectedDate.Month}\\{selectedDate.Year}";
     }
 }
