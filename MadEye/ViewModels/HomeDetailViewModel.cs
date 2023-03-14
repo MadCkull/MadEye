@@ -3,6 +3,7 @@
 using MadEye.Contracts.ViewModels;
 using MadEye.Core.Contracts.Services;
 using MadEye.Core.Models;
+using MadEye.Views;
 using Microsoft.Data.Sqlite;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -19,6 +20,7 @@ public class HomeDetailViewModel : ObservableRecipient, INavigationAware
         get => _item;
         set => SetProperty(ref _item, value);
     }
+
 
     public HomeDetailViewModel(ISampleDataService sampleDataService)
     {
@@ -38,27 +40,11 @@ public class HomeDetailViewModel : ObservableRecipient, INavigationAware
     {
     }
 
+    public StackPanel HistoryStackContainer { get; set; }
+    public Button HistoryLoadButton { get; set; }
+    public string TotalEntries { get; set; }
 
 
-
-
-
-    //My Code:
-
-
-    private StackPanel _HistoryStackContainer;
-    public StackPanel HistoryStackContainer
-    {
-        get => _HistoryStackContainer;
-        set => _HistoryStackContainer = value;
-    }
-
-    private Button _HistoryLoadButton;
-    public Button HistoryLoadButton
-    {
-        get => _HistoryLoadButton;
-        set => _HistoryLoadButton = value;
-    }
 
     private const string ConnectionStr = @"Data Source=D:\Other\History";
     private readonly List<string> siteTitle = new();
@@ -69,16 +55,33 @@ public class HomeDetailViewModel : ObservableRecipient, INavigationAware
 
 
 
-public void GetChromeHistory()
+    public static DateTimeOffset DataParse(string dateStr)
     {
+        var dateParts = dateStr.Split('\\');
+        var day = int.Parse(dateParts[0]);
+        var month = int.Parse(dateParts[1]);
+        var year = int.Parse(dateParts[2]);
+
+        DateTimeOffset date = new DateTimeOffset(year, month, day, 0, 0, 0, TimeSpan.Zero);
+        return date;
+    }
+
+
+
+    public void GetChromeHistory()
+    {
+        DateTimeOffset date = DataParse("12\\3\\2023");
+
         using var connection = new SqliteConnection(ConnectionStr);
         connection.Open();
 
-        var now = DateTimeOffset.UtcNow;
-        var yesterday = now.AddDays(-1);
-        var yesterdayChromeEpoch = (yesterday.ToUnixTimeSeconds() + 11644473600) * 1000000;
-        var nowChromeEpoch = (now.ToUnixTimeSeconds() + 11644473600) * 1000000;
-        var query = $"SELECT title, url, last_visit_time FROM urls WHERE last_visit_time BETWEEN {yesterdayChromeEpoch} AND {nowChromeEpoch}";
+        var startOfDay = new DateTimeOffset(date.Year, date.Month, date.Day, 0, 0, 0, TimeSpan.Zero);
+        var endOfDay = startOfDay.AddDays(1).AddTicks(-1);
+        var startOfDayUnixTime = (startOfDay.UtcDateTime - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalSeconds;
+        var endOfDayUnixTime = (endOfDay.UtcDateTime - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalSeconds;
+        var startOfDayChromeEpoch = (startOfDayUnixTime + 11644473600) * 1000000;
+        var endOfDayChromeEpoch = (endOfDayUnixTime + 11644473600) * 1000000;
+        var query = $"SELECT title, url, last_visit_time FROM urls WHERE last_visit_time BETWEEN {startOfDayChromeEpoch} AND {endOfDayChromeEpoch}";
 
         using var command = new SqliteCommand(query, connection);
         using var reader = command.ExecuteReader();
@@ -94,7 +97,6 @@ public void GetChromeHistory()
             {
                 siteTitle.Add("Untitled Window");
             }
-
             else
             {
                 siteTitle.Add(title);
@@ -124,13 +126,15 @@ public void GetChromeHistory()
 
         loadedCount += count;
         Update_HistoryLoadButton();
+
+        TotalEntries = siteTitle.Count.ToString();
     }
 
     public void AddChildToStackPanel(UIElement element)
     {
-        if (_HistoryStackContainer != null)
+        if (HistoryStackContainer != null)
         {
-            _HistoryStackContainer.Children.Add(element);
+            HistoryStackContainer.Children.Add(element);
         }
     }
 
@@ -140,13 +144,13 @@ public void GetChromeHistory()
     {
         if (loadedCount == siteTitle.Count)
         {
-            _HistoryLoadButton.Content = "No More History";
-            _HistoryLoadButton.IsEnabled = false;
+            HistoryLoadButton.Content = "No More History";
+            HistoryLoadButton.IsEnabled = false;
         }
         else
         {
-            _HistoryLoadButton.Content = "Load More";
-            _HistoryLoadButton.IsEnabled = true;
+            HistoryLoadButton.Content = "Load More";
+            HistoryLoadButton.IsEnabled = true;
         }
     }
 

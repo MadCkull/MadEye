@@ -63,7 +63,7 @@ public class ModuleDataService : ISampleDataService
                        ModuleID = 10644, // Used For Navigation
                         SelectedDate = new DateTime(1997, 8, 25),
                         Module = "Screenshots",
-                        TotalEntries = 814.50,
+                        TotalEntries = 815.76,
                         SymbolCode = 57737,
                         SymbolName = "Audio",
                         Details = new List<ModulePropertyDetail>()
@@ -87,7 +87,7 @@ public class ModuleDataService : ISampleDataService
                         ModuleID = 10645, // Used For Navigation
                         SelectedDate = new DateTime(1997, 8, 25),
                         Module = "WebCam",
-                        TotalEntries = 814.50,
+                        TotalEntries = 816.50,
                         SymbolCode = 57699,
                         SymbolName = "Camera",
                         Details = new List<ModulePropertyDetail>()

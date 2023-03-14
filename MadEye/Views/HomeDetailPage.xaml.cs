@@ -32,7 +32,7 @@ public sealed partial class HomeDetailPage : Page
     {
         get;
     }
-
+    
 
     public HomeDetailPage()
     {
@@ -40,10 +40,12 @@ public sealed partial class HomeDetailPage : Page
         InitializeComponent();
         ViewModel = App.GetService<HomeDetailViewModel>();
         DataContext = ViewModel;
-
-        // Internet History Module:
         ViewModel.HistoryStackContainer = HistoryStackContainer;
         ViewModel.HistoryLoadButton = HistoryLoadButton;
+        
+        ViewModel.TotalEntries = TotalEntries;
+
+
         ViewModel.GetChromeHistory();
         ViewModel.FetchHistory();
     }
@@ -73,16 +75,16 @@ public sealed partial class HomeDetailPage : Page
 
     #endregion
 
-#region User Defined:
+    #region User Defined:
 
 
     #region Internet History Module
 
-    
+
+    readonly string TotalEntries = "0";
 
 
-
-    private void Button_Click(object sender, RoutedEventArgs e)
+    private void HistoryLoadButton_Click(object sender, RoutedEventArgs e)
     {
         ViewModel.FetchHistory();
     }

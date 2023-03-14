@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Reflection.Metadata;
 using System.Windows.Input;
 
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -8,6 +9,7 @@ using MadEye.Contracts.Services;
 using MadEye.Contracts.ViewModels;
 using MadEye.Core.Contracts.Services;
 using MadEye.Core.Models;
+using MadEye.Views;
 
 namespace MadEye.ViewModels;
 
@@ -35,7 +37,6 @@ public class HomeViewModel : ObservableRecipient, INavigationAware
     {
         Source.Clear();
 
-        // TODO: Replace with real data.
         var data = await _sampleDataService.GetContentGridDataAsync();
         foreach (var item in data)
         {
@@ -53,6 +54,11 @@ public class HomeViewModel : ObservableRecipient, INavigationAware
         {
             _navigationService.SetListDataItemForNextConnectedAnimation(clickedItem);
             _navigationService.NavigateTo(typeof(HomeDetailViewModel).FullName!, clickedItem.ModuleID);
+        }
+
+        if (clickedItem != null && clickedItem.ModuleID == 10643)
+        {
+            //My Code *.*
         }
     }
 }

@@ -12,8 +12,9 @@ using System.Windows.Input;
 using Windows.Security.Cryptography.Certificates;
 using Windows.UI.Core;
 using WindowActivatedEventArgs = Microsoft.UI.Xaml.WindowActivatedEventArgs;
-using MadEye.Helpers;
-
+using MadEye.Services;
+using Windows.ApplicationModel.DataTransfer;
+using MadEye.Core.Models;
 
 namespace MadEye.Views;
 
@@ -116,7 +117,7 @@ public sealed partial class ShellPage : Page
 
     private void Shell_Calender_PointerEntered(object sender, PointerRoutedEventArgs e)
     {
-        
+
         Shell_Calender.IsSelected = true;
     }
 
@@ -125,18 +126,37 @@ public sealed partial class ShellPage : Page
         Shell_Calender.IsSelected = false;
     }
 
+
+
+
+
+
+
+
+    public string Selected_Date = $"{DateTime.Now.Day}\\{DateTime.Now.Month}\\{DateTime.Now.Year}";
+
+    
+
     private void CalendarView_SelectedDatesChanged(CalendarView sender, CalendarViewSelectedDatesChangedEventArgs args)
     {
+        INavigationService navigationService = App.GetService<INavigationService>();
+        navigationService.NavigateTo("MadEye.ViewModels.HomeViewModel");
+
         Shell_MadEye.IsSelected = true;
+        NavigationViewControl.IsPaneOpen = false;
 
-        try
-        {
-            NavigationViewControl.IsPaneOpen = false;
-        }
-        catch
-        { }
+        //Get the first (and only) selected date
+        var selectedDate = sender.SelectedDates.FirstOrDefault();
+
+        var Selected_Date = $"{selectedDate.Day}\\{selectedDate.Month}\\{selectedDate.Year}";
+
+
+
+        var package = new DataPackage();
+        package.SetText(Selected_Date);
+        Clipboard.SetContent(package);
+
+
+
     }
-
-
-
 }

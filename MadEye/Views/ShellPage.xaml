@@ -62,9 +62,8 @@
                 <NavigationViewItem
                     x:Name="Shell_Calender"
                     PointerEntered="Shell_Calender_PointerEntered"
-                    PointerExited="Shell_Calender_PointerExited" >
-
-
+                    PointerExited="Shell_Calender_PointerExited" 
+                    helpers:NavigationHelper.NavigateTo="MadEye.ViewModels.HomeViewModel" >
 
                     <CalendarView
                         SelectionMode="Single"
@@ -77,12 +76,13 @@
                         BorderThickness="0" 
                         
                         SelectedDatesChanged="CalendarView_SelectedDatesChanged"/>
+                    
                 </NavigationViewItem>
 
-                
-                
-                
-                
+
+
+
+
 
 
 
@@ -92,8 +92,8 @@
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
             </NavigationView.MenuItems>
-            
-            
+
+
 
             <NavigationView.HeaderTemplate>
                 <DataTemplate>
@@ -104,7 +104,7 @@
                     </Grid>
                 </DataTemplate>
             </NavigationView.HeaderTemplate>
-            
+
             <i:Interaction.Behaviors>
                 <behaviors:NavigationViewHeaderBehavior
                     DefaultHeader="{x:Bind ((ContentControl)ViewModel.Selected).Content, Mode=OneWay}">
@@ -119,11 +119,11 @@
                     </behaviors:NavigationViewHeaderBehavior.DefaultHeaderTemplate>
                 </behaviors:NavigationViewHeaderBehavior>
             </i:Interaction.Behaviors>
-            
+
             <Grid Margin="{StaticResource NavigationViewPageContentMargin}">
                 <Frame x:Name="NavigationFrame" />
             </Grid>
-            
+
         </NavigationView>
     </Grid>
 </Page>
