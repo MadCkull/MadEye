@@ -82,7 +82,7 @@
 
                         <StackPanel x:Name="orderTotalGroup" Margin="{StaticResource SmallTopMargin}">
                             <TextBlock Style="{ThemeResource SubtitleTextBlockStyle}" Text="Total Entries" />
-                            <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Text="{x:Bind siteTitle.Count}" />
+                            <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Text="lol" />
                         </StackPanel>
                     </StackPanel>
 
@@ -91,10 +91,15 @@
 
                 <!-- Shows Browser History-->
                 <ScrollViewer >
-                    <StackPanel x:Name="StackContainer" Orientation="Vertical" Margin="10, 10, 10, 10" HorizontalAlignment="Stretch"/>
+                    <StackPanel 
+                        x:Name="HistoryStackContainer" 
+                        Orientation="Vertical" 
+                        Margin="10, 10, 10, 10" 
+                        HorizontalAlignment="Stretch" 
+                        DataContext="{Binding HomeDetailViewModel}" />
                 </ScrollViewer>
 
-                <Button x:Name="btnAddContainer" Content="Load More" Click="Button_Click" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="10"/>
+                <Button x:Name="HistoryLoadButton" Content="Load More" Click="Button_Click" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="10"/>
 
 
                 <!-- Dummy Text Blocks <TextBlock

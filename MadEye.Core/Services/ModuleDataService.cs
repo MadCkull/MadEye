@@ -157,7 +157,7 @@ public class ModuleDataService : ISampleDataService
                 {
                     new ModuleProperties()
                     {
-                        ModuleID = 10648, // Used For Navigation
+                        ModuleID = 10648, // Used For Navigation (Not Sure)
                         SelectedDate = new DateTime(1997, 8, 25),
                         Module = "Files",
                         TotalEntries = 814.50,

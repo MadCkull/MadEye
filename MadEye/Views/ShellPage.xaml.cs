@@ -11,6 +11,7 @@ using Windows.System;
 using System.Windows.Input;
 using Windows.Security.Cryptography.Certificates;
 using Windows.UI.Core;
+using WindowActivatedEventArgs = Microsoft.UI.Xaml.WindowActivatedEventArgs;
 
 namespace MadEye.Views;
 
@@ -36,7 +37,7 @@ public sealed partial class ShellPage : Page
 
         App.MainWindow.ExtendsContentIntoTitleBar = true;
         App.MainWindow.SetTitleBar(AppTitleBar);
-        //App.MainWindow.Activated += MainWindow_Activated; //Stopped Working (*.*)
+        App.MainWindow.Activated += MainWindow_Activated; //Stopped Working (*.*)
         AppTitleBarText.Text = "AppDisplayName".GetLocalized();
 
         App.MainWindow.IsResizable = false;
@@ -54,12 +55,12 @@ public sealed partial class ShellPage : Page
         KeyboardAccelerators.Add(BuildKeyboardAccelerator(VirtualKey.GoBack));
     }
 
-    //private void MainWindow_Activated(object sender, WindowActivatedEventArgs args)  //Stopped Working (*.*)
-    //{
-    //    var resource = args.WindowActivationState == WindowActivationState.Deactivated ? "WindowCaptionForegroundDisabled" : "WindowCaptionForeground";
+    private void MainWindow_Activated(object sender, WindowActivatedEventArgs args)  //Stopped Working (*.*)
+    {
+        var resource = args.WindowActivationState == WindowActivationState.Deactivated ? "WindowCaptionForegroundDisabled" : "WindowCaptionForeground";
 
-    //    AppTitleBarText.Foreground = (SolidColorBrush)App.Current.Resources[resource];
-    //}
+        AppTitleBarText.Foreground = (SolidColorBrush)App.Current.Resources[resource];
+    }
 
     private void NavigationViewControl_DisplayModeChanged(NavigationView sender, NavigationViewDisplayModeChangedEventArgs args)
     {
@@ -124,21 +125,14 @@ public sealed partial class ShellPage : Page
 
     private void CalendarView_SelectedDatesChanged(CalendarView sender, CalendarViewSelectedDatesChangedEventArgs args)
     {
-        
-
         Shell_MadEye.IsSelected = true;
 
         try
         {
-
-            //if (VirtualKey.Control.HasFlag() {
-                NavigationViewControl.IsPaneOpen = false;
-            //}
+            NavigationViewControl.IsPaneOpen = false;
         }
-        catch (Exception ex)
-        {
-            Page_Recware.Text = "E: " + ex;
-        }
+        catch
+        { }
     }
 
 
