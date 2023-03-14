@@ -86,6 +86,11 @@
 
 
 
+                <NavigationViewItem x:Uid="Shell_RecWare" helpers:NavigationHelper.NavigateTo="MadEye.ViewModels.RecWareViewModel">
+                    <NavigationViewItem.Icon>
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xe7c3;"/>
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
             </NavigationView.MenuItems>
             
             

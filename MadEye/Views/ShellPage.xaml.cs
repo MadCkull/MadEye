@@ -12,6 +12,8 @@ using System.Windows.Input;
 using Windows.Security.Cryptography.Certificates;
 using Windows.UI.Core;
 using WindowActivatedEventArgs = Microsoft.UI.Xaml.WindowActivatedEventArgs;
+using MadEye.Helpers;
+
 
 namespace MadEye.Views;
 

@@ -68,6 +68,8 @@ public partial class App : Application
             services.AddSingleton<IFileService, FileService>();
 
             // Views and ViewModels
+            services.AddTransient<RecWareViewModel>();
+            services.AddTransient<RecWarePage>();
             services.AddTransient<SettingsViewModel>();
             services.AddTransient<SettingsPage>();
             services.AddTransient<HomeDetailViewModel>();
