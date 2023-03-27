@@ -8,7 +8,8 @@ namespace MadEye.GlobalClasses;
 public class GlobalSingletonClass
 {
     private static GlobalSingletonClass? instance;
-    public long HomeModuleSelectedModuleID
+
+    public long SelectedHomeModuleID //Stores the ID of Selected Module (When Clicked)
     {
         get; set;
     }

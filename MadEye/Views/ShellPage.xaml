@@ -70,7 +70,7 @@
                         IsGroupLabelVisible="True"
                         IsOutOfScopeEnabled="True"
                         Language="en"
-                        Height="310"
+                        Height="325"
                         CalendarIdentifier="GregorianCalendar"
                         Background="Transparent"
                         BorderThickness="0" 

@@ -80,7 +80,7 @@ public sealed partial class HomeDetailPage : Page
 
 #region > User Defined:
 
-    #region - Global Values:
+    #region - Main Area:
 
     public string SelectedDate = ((ShellPage)App.MainWindow.Content).Selected_Date;
     readonly string TotalEntries = "0";
@@ -88,7 +88,8 @@ public sealed partial class HomeDetailPage : Page
 
     private void InitilizedModule()
     {
-        long ClickedModule = MadEye.GlobalClasses.GlobalSingletonClass.Instance.HomeModuleSelectedModuleID;
+        //Gets Module ID From SingletonClass (A Global Class that can be accessed from anywhere, used For passing Data between different Classes)
+        var ClickedModule = MadEye.GlobalClasses.GlobalSingletonClass.Instance.SelectedHomeModuleID;
 
         if(ClickedModule == 10646)
         {
@@ -107,17 +108,16 @@ public sealed partial class HomeDetailPage : Page
         ViewModel.HistoryLoadButton = HistoryLoadButton;
         
         ViewModel.GetChromeHistory();
-        ViewModel.FetchHistory();
+        ViewModel.SetHistory();
     }
 
     private void HistoryLoadButton_Click(object sender, RoutedEventArgs e)
     {
-        ViewModel.FetchHistory();
+        ViewModel.SetHistory();
     }
 
     #endregion
 
 #endregion
-
 
 }

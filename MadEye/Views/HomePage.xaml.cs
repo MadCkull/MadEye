@@ -25,6 +25,7 @@ public sealed partial class HomePage : Page
 
     #region User Defined Methods:
 
+    //Keeps Modules Alligned when Size of App is Changed
     private void AdaptiveGridView_Loaded(object sender, RoutedEventArgs e)
     {
         // Get the parent container of the AdaptiveGridView

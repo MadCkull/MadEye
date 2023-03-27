@@ -64,7 +64,7 @@ public class HomeViewModel : ObservableRecipient, INavigationAware
 
         if (clickedItem != null)
         {
-            GlobalClasses.GlobalSingletonClass.Instance.HomeModuleSelectedModuleID = clickedItem.ModuleID;
+            GlobalSingletonClass.Instance.SelectedHomeModuleID = clickedItem.ModuleID;
 
             _navigationService.SetListDataItemForNextConnectedAnimation(clickedItem);
             _navigationService.NavigateTo(typeof(HomeDetailViewModel).FullName!, clickedItem.ModuleID);

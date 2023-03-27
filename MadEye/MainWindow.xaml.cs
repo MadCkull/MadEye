@@ -19,12 +19,10 @@ public sealed partial class MainWindow : WindowEx
     }
 
 
-    #region User Defined Methods
+#region > User Defined:
 
 
 
-
-
-    #endregion
+#endregion
 
 }

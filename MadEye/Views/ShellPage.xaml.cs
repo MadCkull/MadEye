@@ -21,6 +21,9 @@ namespace MadEye.Views;
 // TODO: Update NavigationViewItem titles and icons in ShellPage.xaml.
 public sealed partial class ShellPage : Page
 {
+
+#region > Template Code (Do NOT Modify)
+
     public ShellViewModel ViewModel
     {
         get;
@@ -40,7 +43,7 @@ public sealed partial class ShellPage : Page
 
         App.MainWindow.ExtendsContentIntoTitleBar = true;
         App.MainWindow.SetTitleBar(AppTitleBar);
-        App.MainWindow.Activated += MainWindow_Activated; //Stopped Working (*.*)
+        App.MainWindow.Activated += MainWindow_Activated;
         AppTitleBarText.Text = "AppDisplayName".GetLocalized();
 
         App.MainWindow.IsResizable = false;
@@ -58,7 +61,7 @@ public sealed partial class ShellPage : Page
         KeyboardAccelerators.Add(BuildKeyboardAccelerator(VirtualKey.GoBack));
     }
 
-    private void MainWindow_Activated(object sender, WindowActivatedEventArgs args)  //Stopped Working (*.*)
+    private void MainWindow_Activated(object sender, WindowActivatedEventArgs args)
     {
         var resource = args.WindowActivationState == WindowActivationState.Deactivated ? "WindowCaptionForegroundDisabled" : "WindowCaptionForeground";
 
@@ -99,9 +102,10 @@ public sealed partial class ShellPage : Page
         args.Handled = result;
     }
 
+#endregion
 
 
-    //User Defined Functiions
+#region   > User Defined:
 
 
     private void NavigationViewControl_PaneClosing(NavigationView sender, object args)
@@ -127,12 +131,6 @@ public sealed partial class ShellPage : Page
     }
 
 
-
-
-
-
-
-
     public string Selected_Date = $"{DateTime.Now.Day}\\{DateTime.Now.Month}\\{DateTime.Now.Year}";
 
     
@@ -145,9 +143,13 @@ public sealed partial class ShellPage : Page
         Shell_MadEye.IsSelected = true;
         NavigationViewControl.IsPaneOpen = false;
 
-        //Get the first (and only) selected date
+        //Gets the first (and only) selected date
         var selectedDate = sender.SelectedDates.FirstOrDefault();
 
         Selected_Date = $"{selectedDate.Day}\\{selectedDate.Month}\\{selectedDate.Year}";
     }
+
+#endregion
+
+
 }

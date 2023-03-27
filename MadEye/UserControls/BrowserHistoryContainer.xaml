@@ -26,15 +26,18 @@
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
 
-        <Ellipse x:Name="Site_Icon"
+        <Ellipse 
                  Grid.Column="0"
-                 Width="25"
-                 Height="25"
-                 Margin="5, 5, 0, 5" >
+                 Width="20"
+                 Height="20"
+                 Margin="7, 5, 0, 3" >
             <Ellipse.Fill>
-                <ImageBrush ImageSource="C:\Users\MadCkull\Downloads\Chrome_Icon.png"/>
+                <ImageBrush 
+                    x:Name="Site_Icon"
+                    ImageSource="C:\Users\MadCkull\Downloads\Chrome_Icon.png" />
             </Ellipse.Fill>
         </Ellipse>
+        
 
         <TextBlock x:Name="Site_Title"
                    Grid.Column="1"

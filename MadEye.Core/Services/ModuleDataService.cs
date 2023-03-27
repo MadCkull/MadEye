@@ -40,8 +40,8 @@ public class ModuleDataService : ISampleDataService
                         SelectedDate = new DateTime(1997, 8, 25),
                         Module = "KeyStrokes",
                         TotalEntries = 814.50,
-                        SymbolCode = 57643,
-                        SymbolName = "Globe",
+                        SymbolCode = 57668,
+                        SymbolName = "Keyboard",
                         Details = new List<ModulePropertyDetail>()
                         {
                             new ModulePropertyDetail()
@@ -64,8 +64,8 @@ public class ModuleDataService : ISampleDataService
                         SelectedDate = new DateTime(1997, 8, 25),
                         Module = "Screenshots",
                         TotalEntries = 814.50,
-                        SymbolCode = 57737,
-                        SymbolName = "Audio",
+                        SymbolCode = 57688,
+                        SymbolName = "Pictures",
                         Details = new List<ModulePropertyDetail>()
                         {
                             new ModulePropertyDetail()
@@ -88,7 +88,7 @@ public class ModuleDataService : ISampleDataService
                         SelectedDate = new DateTime(1997, 8, 25),
                         Module = "WebCam",
                         TotalEntries = 814.50,
-                        SymbolCode = 57699,
+                        SymbolCode = 57620,
                         SymbolName = "Camera",
                         Details = new List<ModulePropertyDetail>()
                         {
@@ -113,8 +113,8 @@ public class ModuleDataService : ISampleDataService
                         SelectedDate = new DateTime(1997, 8, 25),
                         Module = "Internet History",
                         TotalEntries = 814.50,
-                        SymbolCode = 57643,
-                        SymbolName = "Globe",
+                        SymbolCode = 57633,
+                        SymbolName = "Clock",
                         Details = new List<ModulePropertyDetail>()
                         {
                             new ModulePropertyDetail()
@@ -137,8 +137,8 @@ public class ModuleDataService : ISampleDataService
                         SelectedDate = new DateTime(1997, 8, 25),
                         Module = "File Explorer",
                         TotalEntries = 814.50,
-                        SymbolCode = 57737,
-                        SymbolName = "Audio",
+                        SymbolCode = 57736,
+                        SymbolName = "Folder",
                         Details = new List<ModulePropertyDetail>()
                         {
                             new ModulePropertyDetail()
@@ -162,7 +162,7 @@ public class ModuleDataService : ISampleDataService
                         Module = "Files",
                         TotalEntries = 814.50,
                         SymbolCode = 57699,
-                        SymbolName = "Camera",
+                        SymbolName = "Calendar",
                         Details = new List<ModulePropertyDetail>()
                         {
                             new ModulePropertyDetail()
@@ -180,10 +180,7 @@ public class ModuleDataService : ISampleDataService
 
     public async Task<IEnumerable<ModuleProperties>> GetContentGridDataAsync()
     {
-        if (_allOrders == null)
-        {
-            _allOrders = new List<ModuleProperties>(AllOrders());
-        }
+        _allOrders ??= new List<ModuleProperties>(AllOrders());
 
         await Task.CompletedTask;
         return _allOrders;

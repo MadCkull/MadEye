@@ -17,6 +17,7 @@ using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
 using Microsoft.UI;
 using Windows.System;
+using System.Globalization;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -32,6 +33,7 @@ public sealed partial class BrowserHistoryContainer : UserControl
         LayoutRootGrid.Background = (Brush)BackgroundAcrylicBrush(0.2, 0.4, 0.2);
     }
 
+    public Microsoft.UI.Xaml.Media.ImageBrush SiteIconControl => Site_Icon;
 
     public TextBlock SiteTitleControl => Site_Title;
 
