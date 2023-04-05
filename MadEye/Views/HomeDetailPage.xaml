@@ -99,7 +99,24 @@
                     </ScrollViewer>
                     <Button x:Name="HistoryLoadButton" Content="Load More" Click="HistoryLoadButton_Click" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="10"/>
                 </StackPanel>
-                
+
+
+                <!-- Shows Captured Keystrokes-->
+                <StackPanel 
+                        x:Name="KeystrokesModule"
+                        Visibility="Collapsed" >
+
+                    <ScrollViewer >
+                        <StackPanel
+                        x:Name="KeystrokesStackContainer" 
+                        Orientation="Vertical" 
+                        Margin="10, 10, 10, 10" 
+                        HorizontalAlignment="Stretch" 
+                        DataContext="{Binding HomeDetailViewModel}" />
+                    </ScrollViewer>
+                    <Button x:Name="KeystrokesLoadButton" Margin="10" Content="Load More" Click="KeystrokesLoadButton_Click" HorizontalAlignment="Center" VerticalAlignment="Top" />
+                </StackPanel>
+
 
 
 

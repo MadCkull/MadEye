@@ -15,6 +15,9 @@ using WindowActivatedEventArgs = Microsoft.UI.Xaml.WindowActivatedEventArgs;
 using MadEye.Services;
 using Windows.ApplicationModel.DataTransfer;
 using MadEye.Core.Models;
+using Windows.UI.Popups;
+using Windows.ApplicationModel.Email;
+using WinUIEx.Messaging;
 
 namespace MadEye.Views;
 
@@ -132,8 +135,8 @@ public sealed partial class ShellPage : Page
 
 
     public string Selected_Date = $"{DateTime.Now.Day}\\{DateTime.Now.Month}\\{DateTime.Now.Year}";
-
     
+
 
     private void CalendarView_SelectedDatesChanged(CalendarView sender, CalendarViewSelectedDatesChangedEventArgs args)
     {

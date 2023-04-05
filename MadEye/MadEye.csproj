@@ -18,6 +18,7 @@
   <ItemGroup>
     <None Remove="BrowserHistoryContainer.xaml" />
     <None Remove="Resources\DefaultSiteIcon.png" />
+    <None Remove="UserControls\KeystrokesContainer.xaml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\DefaultSiteIcon.png" />
@@ -47,6 +48,9 @@
     <None Update="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <Page Update="UserControls\KeystrokesContainer.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Update="BrowserHistoryContainer.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -54,10 +58,6 @@
 
   <ItemGroup Condition="'$(DisableMsixProjectCapabilityAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
     <ProjectCapability Include="Msix" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="UserControls\" />
   </ItemGroup>
   
   <PropertyGroup Condition="'$(DisableHasPackageAndPublishMenuAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">

@@ -46,7 +46,7 @@ public sealed partial class HomeDetailPage : Page
         
         ViewModel.TotalEntries = TotalEntries;
 
-        InitilizedModule();
+        InitilizeModule();
     }
 
 
@@ -86,11 +86,15 @@ public sealed partial class HomeDetailPage : Page
     readonly string TotalEntries = "0";
 
 
-    private void InitilizedModule()
+    private void InitilizeModule()
     {
         //Gets Module ID From SingletonClass (A Global Class that can be accessed from anywhere, used For passing Data between different Classes)
         var ClickedModule = MadEye.GlobalClasses.GlobalSingletonClass.Instance.SelectedHomeModuleID;
 
+        if (ClickedModule == 10643)
+        {
+            KeystrokesModuleInitialize();
+        }
         if(ClickedModule == 10646)
         {
             HistoryModuleInitialize();
@@ -118,6 +122,26 @@ public sealed partial class HomeDetailPage : Page
 
     #endregion
 
-#endregion
+
+    #region - Keystrokes Capture Module:
+
+    public void KeystrokesModuleInitialize()
+    {
+        KeystrokesModule.Visibility = Visibility.Visible;
+        ViewModel.KeystrokesStackContainer = KeystrokesStackContainer;
+        ViewModel.KeystrokesLoadButton = KeystrokesLoadButton;
+
+        ViewModel.GetCapturedKeystrokes();
+        ViewModel.SetKeystrokes();
+    }
+
+    private void KeystrokesLoadButton_Click(object sender, RoutedEventArgs e)
+    {
+        ViewModel.SetKeystrokes();
+    }
+
+    #endregion
+
+    #endregion
 
 }

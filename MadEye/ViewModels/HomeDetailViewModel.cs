@@ -2,11 +2,13 @@
 using System.Reflection;
 using System.Resources;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Text.RegularExpressions;
 using CommunityToolkit.Mvvm.ComponentModel;
 
 using MadEye.Contracts.ViewModels;
 using MadEye.Core.Contracts.Services;
 using MadEye.Core.Models;
+using MadEye.UserControls;
 using MadEye.Views;
 using Microsoft.Data.Sqlite;
 using Microsoft.UI.Xaml;
@@ -22,7 +24,7 @@ namespace MadEye.ViewModels;
 public class HomeDetailViewModel : ObservableRecipient, INavigationAware
 {
 
-#region > Template Code (Do NOT Modify)
+    #region > Template Code (Do NOT Modify)
 
     private readonly ISampleDataService _sampleDataService;
     private ModuleProperties? _item;
@@ -56,7 +58,7 @@ public class HomeDetailViewModel : ObservableRecipient, INavigationAware
 
 
 
-#region > User Defined:
+    #region > User Defined:
 
     public string TotalEntries
     {
@@ -78,162 +80,76 @@ public class HomeDetailViewModel : ObservableRecipient, INavigationAware
     }
 
     //File Locations
-    private readonly string FaviconFile = @"D:\Other\Favicons";
-    private readonly string HistoryFile = @"Data Source=D:\Other\History";
-    
+    private readonly string HistoryFile = @"Data Source=D:\Other\RecServ\InternetHistoryDB";
+
     //Lists to store the Fatched Values
     private readonly List<byte[]> siteIcons = new();
     private readonly List<string> siteTitle = new();
     private readonly List<string> siteUrl = new();
-    private readonly List<DateTimeOffset> siteVisitTimes = new();
+    private readonly List<string> siteVisitTime = new();
 
     //Controls Number of Loaded Items
     private const int BatchSize = 50;
     private int loadedCount = 0;
 
 
-    //Convert Date to Chrome's Format
-    public static DateTimeOffset DataParse()
-    {
-        var selectedDate = ((ShellPage)App.MainWindow.Content).Selected_Date;
-        var dateParts = selectedDate.Split('\\');
-        var day = int.Parse(dateParts[0]);
-        var month = int.Parse(dateParts[1]);
-        var year = int.Parse(dateParts[2]);
-
-        DateTimeOffset date = new DateTimeOffset(year, month, day, 0, 0, 0, TimeSpan.Zero);
-        return date;
-    }
 
 
-    //Fetches Favicons From Sqllite File
-    private byte[] GetFavicons(string url)
-    {
-        var siteUri = new Uri(url);
-        string siteUrl = siteUri.GetLeftPart(UriPartial.Authority);
-
-        var iconPath = FaviconFile;
-        if (!File.Exists(iconPath)) return null;
-
-        byte[] faviconData = null;
-        using (var connection = new SqliteConnection($"Data Source={iconPath};"))
-        {
-            connection.Open();
-            using (var command = new SqliteCommand("SELECT icon_mapping.page_url, favicon_bitmaps.image_data FROM icon_mapping JOIN favicon_bitmaps ON icon_mapping.icon_id = favicon_bitmaps.icon_id WHERE icon_mapping.page_url LIKE '%' || @url || '%'", connection))
-            {
-                command.Parameters.AddWithValue("@url", siteUrl);
-                using (var reader = command.ExecuteReader())
-                {
-                    if (reader.Read())
-                    {
-                        faviconData = GetBytes(reader);
-                    }
-                }
-            }
-        }
-
-        return faviconData;
-    }
-
-    //Converts Fatches Icons (PNG) to Byte[]
-    private byte[] GetBytes(SqliteDataReader reader)
-    {
-        const int CHUNK_SIZE = 2 * 1024;
-        var buffer = new byte[CHUNK_SIZE];
-        long bytesRead;
-        long fieldOffset = 0;
-        using (MemoryStream stream = new MemoryStream())
-        {
-            while ((bytesRead = reader.GetBytes(1, fieldOffset, buffer, 0, buffer.Length)) > 0)
-            {
-                stream.Write(buffer, 0, (int)bytesRead);
-                fieldOffset += bytesRead;
-            }
-            return stream.ToArray();
-        }
-    }
-
-    //Stores  Byte[] in list
-    private void StoreFavicon(string url)
-    {
-        var faviconData = GetFavicons(url);
-        if (faviconData != null)
-        {
-            siteIcons.Add(faviconData);
-        }
-        else
-        {
-            StorageFile file = StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///Resources/DefaultSiteIcon.png")).AsTask().Result;
-            IBuffer buffer = FileIO.ReadBufferAsync(file).AsTask().Result;
-            byte[] DefaultIcon = buffer.ToArray();
-            siteIcons.Add(DefaultIcon);
-        }
-    }
-
-    //Returns Image based on the URL Index
-    private BitmapImage SetSiteIcon(int Url_Index)
+    private BitmapImage SetSiteIcon(int Icon_Index)
     {
         var image = new BitmapImage();
-        if (Url_Index >= 0 && Url_Index < siteIcons.Count)
+        var imageBytes = siteIcons[Icon_Index];
+        using (var stream = new InMemoryRandomAccessStream())
         {
-            
-            var imageBytes = siteIcons[Url_Index];
-            using (var stream = new InMemoryRandomAccessStream())
-            {
-                stream.WriteAsync(imageBytes.AsBuffer());
-                stream.Seek(0);
-                image.SetSourceAsync(stream);
-            }
-            return image;
+            stream.WriteAsync(imageBytes.AsBuffer());
+            stream.Seek(0);
+            image.SetSourceAsync(stream);
         }
-        else
-        {
-            image = new BitmapImage(new Uri("ms-appx:///MadEye/Resources/DefaultSiteIcon.png"));
-            return image;
-        }
+        return image;
     }
 
+
+
+
+
+
+
+    private readonly string selectedDate = ((ShellPage)App.MainWindow.Content).Selected_Date.Replace("\\", "-");
 
     //Fetches History From Sqllite File and Stores in respactive Lists
     public void GetChromeHistory()
     {
-        DateTimeOffset date = DataParse();
+        var Table = selectedDate;
 
-        string ConnectionStr = HistoryFile;
+        var ConnectionStr = HistoryFile;
         using var connection = new SqliteConnection(ConnectionStr);
+
         connection.Open();
-
-        var startOfDay = new DateTimeOffset(date.Year, date.Month, date.Day, 0, 0, 0, TimeSpan.Zero);
-        var endOfDay = startOfDay.AddDays(1).AddTicks(-1);
-        var startOfDayUnixTime = (startOfDay.UtcDateTime - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalSeconds;
-        var endOfDayUnixTime = (endOfDay.UtcDateTime - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalSeconds;
-        var startOfDayChromeEpoch = (startOfDayUnixTime + 11644473600) * 1000000;
-        var endOfDayChromeEpoch = (endOfDayUnixTime + 11644473600) * 1000000;
-
-        var query = $"SELECT title, url, last_visit_time FROM urls WHERE last_visit_time BETWEEN {startOfDayChromeEpoch} AND {endOfDayChromeEpoch} ORDER BY last_visit_time ASC";
-
-        using var command = new SqliteCommand(query, connection);
+        using var command = new SqliteCommand($"SELECT name FROM sqlite_master WHERE type='table' AND name='{Table}'", connection);
         using var reader = command.ExecuteReader();
-        while (reader.Read())
+        if (reader.Read())
         {
-            var title = reader.GetString(0);
-            var url = reader.GetString(1);
-            var visitTimeChromeEpoch = reader.GetInt64(2);
-            var visitTimeSeconds = (visitTimeChromeEpoch / 1000000) - 11644473600;
-            var visitTime = DateTimeOffset.FromUnixTimeSeconds(visitTimeSeconds);
-
-            StoreFavicon(url);
-
-            if (title == "" || title.Contains("https://"))
+            var query = $"SELECT Icon, Title, URL, Time FROM '{Table}'";
+            using var command2 = new SqliteCommand(query, connection);
+            using var reader2 = command2.ExecuteReader();
+            while (reader2.Read())
             {
-                siteTitle.Add("Untitled Page");
-            }
-            else
-            {
+                var IconStream = reader2.GetStream(0);
+                byte[] IconBytes;
+                using (var ms = new MemoryStream())
+                {
+                    IconStream.CopyTo(ms);
+                    IconBytes = ms.ToArray();
+                }
+                var title = reader2.GetString(1);
+                var url = reader2.GetString(2);
+                var visitTime = reader2.GetString(3);
+
+                siteIcons.Add(IconBytes);
                 siteTitle.Add(title);
+                siteUrl.Add(url);
+                siteVisitTime.Add(visitTime);
             }
-            siteUrl.Add(url);
-            siteVisitTimes.Add(visitTime);
         }
     }
 
@@ -250,7 +166,7 @@ public class HomeDetailViewModel : ObservableRecipient, INavigationAware
                 SiteIconControl = { ImageSource = SetSiteIcon(i) },
                 SiteTitleControl = { Text = siteTitle[i] },
                 SiteLinkControl = { Content = siteUrl[i] },
-                SiteTimeControl = { Text = siteVisitTimes[i].ToString("h:mm tt") }
+                SiteTimeControl = { Text = siteVisitTime[i] }
             };
 
             AddChildToStackPanel(container);
@@ -289,11 +205,134 @@ public class HomeDetailViewModel : ObservableRecipient, INavigationAware
         {
             HistoryLoadButton.Content = "Load More";
             HistoryLoadButton.IsEnabled = true;
-        }        
+        }
     }
+
+
 
     #endregion
 
-#endregion
+
+
+    #region - Keystrokes Capture Module:
+
+    //For Passing Values
+    public StackPanel KeystrokesStackContainer
+    {
+        get; set;
+    }
+    public Button KeystrokesLoadButton
+    {
+        get; set;
+    }
+
+
+    //File Locations
+    private readonly string KeystrokesFile = @"Data Source=D:\Other\RecServ\KeystrokesDB";
+
+    //Lists to store the Fatched Values
+    //private readonly List<byte[]> WindowIcons = new();
+    private readonly List<string> WindowTitle = new();
+    private readonly List<string> WindowContent = new();
+    private readonly List<string> WindowCaptureTime = new();
+
+
+    public void GetCapturedKeystrokes()
+    {
+        var Table = selectedDate;
+
+        var ConnectionStr = KeystrokesFile;
+        using var connection = new SqliteConnection(ConnectionStr);
+
+        connection.Open();
+        using var command = new SqliteCommand($"SELECT name FROM sqlite_master WHERE type='table' AND name='{Table}'", connection);
+        using var reader = command.ExecuteReader();
+        if (reader.Read())
+        {
+            var query = $"SELECT Title, Content, Time FROM '{Table}' ORDER BY Time DESC";
+            using var command2 = new SqliteCommand(query, connection);
+            using var reader2 = command2.ExecuteReader();
+            while (reader2.Read())
+            {
+                //var IconStream = reader2.GetStream(0);
+                //byte[] IconBytes;
+                //using (var ms = new MemoryStream())
+                //{
+                //    IconStream.CopyTo(ms);
+                //    IconBytes = ms.ToArray();
+                //}
+                var title = reader2.GetString(0);       //1
+                var content = reader2.GetString(1);     //2
+                var captureTime = reader2.GetString(2); //3
+
+                //WindowIcons.Add(IconBytes);
+                WindowTitle.Add(title);
+                WindowContent.Add(content);
+                WindowCaptureTime.Add(captureTime);
+            }
+        }
+    }
+
+
+    //Sets Values of KeystrokesContainer Controls (Called in Other Classes)
+    public void SetKeystrokes()
+    {
+        var startIndex = loadedCount;
+        var count = Math.Min(BatchSize, WindowTitle.Count - startIndex);
+
+        for (var i = startIndex; i < startIndex + count; i++)
+        {
+            var keystrokesContainer = new KeystrokesContainer
+            {
+                //WindowIconControl = { ImageSource = SetSiteIcon(i) },
+                WindowTitleControl = { Text = WindowTitle[i] },
+                WindowContentControl = { Text = WindowContent[i] },
+                WindowTimeControl = { Text = WindowCaptureTime[i] }
+            };
+
+            AddKeystrokesChildToStackPanel(keystrokesContainer);
+        }
+
+        loadedCount += count;
+        Update_KeystrokesLoadButton();
+
+        TotalEntries = WindowTitle.Count.ToString();
+    }
+
+    public void AddKeystrokesChildToStackPanel(UIElement KeystrokesElement)
+    {
+        if (KeystrokesStackContainer != null)
+        {
+            KeystrokesStackContainer.Children.Add(KeystrokesElement);
+        }
+    }
+
+    //Updates Keystrokes Load Button
+    private void Update_KeystrokesLoadButton()
+    {
+        KeystrokesLoadButton.IsEnabled = false;
+
+        if (loadedCount == 0)
+        {
+            KeystrokesLoadButton.Content = "Data Not Found";
+
+        }
+        else if (loadedCount == WindowTitle.Count)
+        {
+            KeystrokesLoadButton.Content = "No More Data";
+        }
+        else
+        {
+            KeystrokesLoadButton.Content = "Load More";
+            KeystrokesLoadButton.IsEnabled = true;
+        }
+    }
+
+
+    #endregion
+
+
+
+    #endregion
 
 }

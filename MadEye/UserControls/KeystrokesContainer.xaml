@@ -1,0 +1,75 @@
+<!-- Copyright (c) Microsoft Corporation and Contributors. -->
+<!-- Licensed under the MIT License. -->
+
+<UserControl
+    x:Class="MadEye.UserControls.KeystrokesContainer"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:MadEye.UserControls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    
+        PointerEntered="OnPointerEntered"
+        PointerExited="OnPointerExited" 
+        PointerPressed="OnPointerPressed"
+        PointerReleased="OnPointerReleased" 
+    
+        Loaded="OnContainer_Loaded">
+
+    <Grid x:Name="LayoutRootGrid"
+          Margin="5"
+          Padding="3"
+          Height="46.5"
+          CornerRadius="10" >
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="20" />
+        </Grid.ColumnDefinitions>
+
+        <Ellipse 
+                 Grid.Column="0"
+                 Width="20"
+                 Height="20"
+                 Margin="7, 5, 0, 3" >
+            <Ellipse.Fill>
+                <ImageBrush 
+                    x:Name="Window_Icon"/>
+            </Ellipse.Fill>
+        </Ellipse>
+
+
+        <TextBlock x:Name="Window_Title"
+                   Grid.Column="1"
+                   IsTextSelectionEnabled="True"
+                   FontWeight="SemiBold"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Margin="15,1,2,2" />
+
+        <TextBlock x:Name="Window_Content"
+                         Grid.Column="1"
+                         FontSize="13"
+                         TextWrapping="WrapWholeWords"
+                         Margin="20,21,5,2" />
+
+        <TextBlock x:Name="Window_Time"
+                   Grid.Column="2"
+                   FontWeight="ExtraLight"
+                   HorizontalAlignment="Right"
+                   VerticalAlignment="Center"
+                   Margin="50,0,25,0" />
+
+        <TextBlock x:Name="ExpendSymbol"
+                   Grid.Column="3"
+                   Text=" "
+                   FontSize="20"
+                   HorizontalAlignment="Right"
+                   VerticalAlignment="top"
+                   Margin="0,5,5,0" />
+    </Grid>
+    
+</UserControl>
