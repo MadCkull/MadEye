@@ -1,4 +1,4 @@
-// Copyright (c) Microsoft Corporation and Contributors.
+// Copyright (ContentChar) Microsoft Corporation and Contributors.
 // Licensed under the MIT License.
 
 using System;
@@ -6,12 +6,14 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Text;
 using CommunityToolkit.WinUI.UI.Controls;
 using Microsoft.UI;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
 using Microsoft.UI.Xaml.Data;
+using Microsoft.UI.Xaml.Documents;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
@@ -40,6 +42,105 @@ public sealed partial class KeystrokesContainer : UserControl
     public TextBlock WindowContentControl => Window_Content;
 
     public TextBlock WindowTimeControl => Window_Time;
+
+    private string GetToString()
+    {
+        var Uncolored_Content_String = Window_Content.Text;
+        return Uncolored_Content_String;
+    }
+
+
+
+
+    public void ColorCode(string input)
+    {
+        SolidColorBrush highlightColor = new SolidColorBrush(Colors.DarkGray);
+        var insideBrackets = false;
+        var depth = 0;
+
+        if (input == "<No Data Found>")
+        {
+            Window_Content.Foreground = new SolidColorBrush(Colors.SlateGray);
+            Window_Content.Text = "<No Data Found>";
+            return;
+        }
+
+        Window_Content.Text = null;
+
+        foreach (var ContentChar in input)
+        {
+            if (ContentChar == '[')
+            {
+                depth++;
+                if (depth == 1)
+                {
+                    insideBrackets = true;
+                    Window_Content.Inlines.Add(new Run { Text = "[", Foreground = highlightColor });
+                }
+                else if (depth > 1 && insideBrackets)
+                {
+                    Window_Content.Inlines.Add(new Run { Text = "[", Foreground = highlightColor });
+                }
+                else
+                {
+                    Window_Content.Inlines.Add(new Run { Text = "[", Foreground = highlightColor });
+                }
+            }
+            else if (ContentChar == ']')
+            {
+                depth--;
+                if (depth == 0)
+                {
+                    insideBrackets = false;
+                    Window_Content.Inlines.Add(new Run { Text = "]", Foreground = highlightColor });
+                }
+                else if (depth > 0 && insideBrackets)
+                {
+                    Window_Content.Inlines.Add(new Run { Text = "]", Foreground = highlightColor });
+                }
+                else
+                {
+                    Window_Content.Inlines.Add(new Run { Text = "]", Foreground = highlightColor });
+                }
+            }
+            else
+            {
+                if (insideBrackets)
+                {
+                    Window_Content.Inlines.Add(new Run { Text = ContentChar.ToString(), Foreground = highlightColor });
+                }
+                else
+                {
+                    Window_Content.Inlines.Add(new Run { Text = ContentChar.ToString() });
+                }
+            }
+        }
+    }
+
+
+
+
+
+    private void ColorTest()
+    {
+        Window_Content.Inlines.Add(new Run { Text = "Hello " });
+        Window_Content.Inlines.Add(new Run { Text = "World", Foreground = new SolidColorBrush(Colors.DarkGray) });
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     private object BackgroundAcrylicBrush(double Opacity, double TintOpacity, double TintLuminosityOpacity)
     {
@@ -95,6 +196,7 @@ public sealed partial class KeystrokesContainer : UserControl
 
     private void OnContainer_Loaded(object sender, RoutedEventArgs e)
     {
+        ColorCode(GetToString());
         if (Window_Content.ActualHeight >30)
         {
             ExpendSymbol.Text = "\u25BE";

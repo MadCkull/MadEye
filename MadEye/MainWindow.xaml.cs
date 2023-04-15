@@ -2,6 +2,7 @@
 using Microsoft.UI.Composition.SystemBackdrops;
 using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Media;
 using Windows.Storage;
 using WinUIEx;
 
@@ -19,10 +20,18 @@ public sealed partial class MainWindow : WindowEx
     }
 
 
-#region > User Defined:
+    public void ChangeBackdrop()
+    {
+        //This is just Dummy Code for startup
+        this.Backdrop = new AcrylicSystemBackdrop();
+        this.Backdrop = new MicaSystemBackdrop();
+    }
+
+
+    #region > User Defined:
 
 
 
-#endregion
+    #endregion
 
 }

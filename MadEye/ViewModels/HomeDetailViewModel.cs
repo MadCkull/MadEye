@@ -2,6 +2,7 @@
 using System.Reflection;
 using System.Resources;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Text;
 using System.Text.RegularExpressions;
 using CommunityToolkit.Mvvm.ComponentModel;
 
@@ -11,8 +12,11 @@ using MadEye.Core.Models;
 using MadEye.UserControls;
 using MadEye.Views;
 using Microsoft.Data.Sqlite;
+using Microsoft.UI;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Documents;
+using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Media.Imaging;
 using Windows.Graphics.Imaging;
 using Windows.Storage;
@@ -237,6 +241,8 @@ public class HomeDetailViewModel : ObservableRecipient, INavigationAware
     private readonly List<string> WindowCaptureTime = new();
 
 
+
+
     public void GetCapturedKeystrokes()
     {
         var Table = selectedDate;
@@ -285,7 +291,7 @@ public class HomeDetailViewModel : ObservableRecipient, INavigationAware
             var keystrokesContainer = new KeystrokesContainer
             {
                 //WindowIconControl = { ImageSource = SetSiteIcon(i) },
-                WindowTitleControl = { Text = WindowTitle[i] },
+                WindowTitleControl = { Text =  WindowTitle[i] },
                 WindowContentControl = { Text = WindowContent[i] },
                 WindowTimeControl = { Text = WindowCaptureTime[i] }
             };
