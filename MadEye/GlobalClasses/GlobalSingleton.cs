@@ -13,10 +13,17 @@ public class GlobalSingletonClass
     {
         get; set;
     }
+    
+    public bool isLoggedin
+    {
+        get; set;
+    }
 
     private GlobalSingletonClass()
     {
         // Private constructor to prevent instantiation
+
+        isLoggedin = false;
     }
 
     public static GlobalSingletonClass Instance

@@ -7,10 +7,80 @@
     xmlns:animations="using:CommunityToolkit.WinUI.UI.Animations"
     xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:models="using:MadEye.Core.Models"
-    mc:Ignorable="d">
+    mc:Ignorable="d"
+    
+    Loaded="Page_Loaded">
 
     <Grid x:Name="ContentArea" Margin="0,0,0,30" >
-        <controls:AdaptiveGridView
+
+
+        <Grid 
+            x:Name="LoginPanel"
+            Height="330"
+            Width="300"
+            Margin="0,-50,0,0"
+            CornerRadius="10" 
+            Background="{ThemeResource AcrylicBackgroundFillColorDefaultBrush}"
+            Opacity="0.7">
+            
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="20"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock
+                Grid.Row="0"
+                Text="LOGIN"
+                FontWeight="Bold"
+                FontSize="30" 
+                HorizontalAlignment="Center"
+                Margin="0,15,0,25" />
+
+            <TextBox 
+                x:Name="Inpt_Username"
+                Grid.Row="1"
+                Header="Username:" 
+                Margin="10"
+                
+                TextChanged="Inpt_Username_TextChanged"/>
+
+            <PasswordBox
+                x:Name="Inpt_Password"
+                Grid.Row="2"
+                Header="Password"
+                Margin="10,10,10,0"
+                
+                PasswordChanged="Inpt_Password_PasswordChanged"/>
+
+            <TextBlock
+                x:Name="LoginError"
+                Grid.Row="3"
+                Text="Incorrect Credentials!"
+                Foreground="Red"
+                FontSize="10" 
+                
+                Visibility="Collapsed"
+                HorizontalAlignment="Right"
+                Margin="0,0,10,0"
+                 />
+
+            <Button
+                x:Name="Btn_Login"
+                Grid.Row="4"
+                Content="Login"
+                FontWeight="Medium"
+                HorizontalAlignment="Right"
+                Margin="0,15,10,0"
+                Click="Btn_Login_Click"/>
+
+        </Grid>
+
+        <Grid x:Name="ModulesGrid">
+
+            <controls:AdaptiveGridView
             animations:Connected.ListItemElementName="itemThumbnail"
             animations:Connected.ListItemKey="animationKeyContentGrid"
             VerticalAlignment="Center"
@@ -22,25 +92,28 @@
             SizeChanged="AdaptiveGridView_Loaded"
             SelectionMode="None"
             StretchContentForSingleRow="False" >
-            <controls:AdaptiveGridView.ItemTemplate>
-                <DataTemplate x:DataType="models:ModuleProperties">
-                    <Grid
+                <controls:AdaptiveGridView.ItemTemplate>
+                    <DataTemplate x:DataType="models:ModuleProperties">
+                        <Grid
                         x:Name="itemThumbnail"
                         Padding="{StaticResource XSmallLeftTopRightBottomMargin}">
-                        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                            <FontIcon
+                            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <FontIcon
                                 Glyph="{x:Bind Symbol}"
                                 AutomationProperties.Name="{x:Bind SymbolName}" />
-                            <TextBlock
+                                <TextBlock
                                 Margin="{StaticResource XXSmallTopMargin}"
                                 HorizontalAlignment="Center"
                                 Style="{ThemeResource BodyTextStyle}"
                                 Text="{x:Bind Module}" />
-                        </StackPanel>
-                    </Grid>
-                </DataTemplate>
-            </controls:AdaptiveGridView.ItemTemplate>
-        </controls:AdaptiveGridView>
+                            </StackPanel>
+                        </Grid>
+                    </DataTemplate>
+                </controls:AdaptiveGridView.ItemTemplate>
+            </controls:AdaptiveGridView>
+            
+        </Grid>
+
     </Grid>
-    
+
 </Page>

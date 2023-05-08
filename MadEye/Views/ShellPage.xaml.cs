@@ -124,7 +124,6 @@ public sealed partial class ShellPage : Page
 
     private void Shell_Calender_PointerEntered(object sender, PointerRoutedEventArgs e)
     {
-
         Shell_Calender.IsSelected = true;
     }
 

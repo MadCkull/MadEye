@@ -10,6 +10,13 @@ namespace MadEye.Views;
 
 public sealed partial class HomePage : Page
 {
+
+    private readonly string Username = "a";
+    private readonly string Password = "b";
+
+    private bool isLoggedin = MadEye.GlobalClasses.GlobalSingletonClass.Instance.isLoggedin;
+
+
     public HomeViewModel ViewModel
     {
         get;
@@ -18,12 +25,15 @@ public sealed partial class HomePage : Page
     public HomePage()
     {
         ViewModel = App.GetService<HomeViewModel>();
+        
         InitializeComponent();
     }
 
 
 
     #region User Defined Methods:
+
+
 
     //Keeps Modules Alligned when Size of App is Changed
     private void AdaptiveGridView_Loaded(object sender, RoutedEventArgs e)
@@ -44,5 +54,42 @@ public sealed partial class HomePage : Page
         }
     }
 
-#endregion
+    #endregion
+    
+    private void Btn_Login_Click(object sender, RoutedEventArgs e)
+    {
+        if (Inpt_Username.Text == Username && Inpt_Password.Password == Password)
+        {
+            LoginPanel.Visibility = Visibility.Collapsed;
+            ModulesGrid.Visibility = Visibility.Visible;
+            MadEye.GlobalClasses.GlobalSingletonClass.Instance.isLoggedin = true;
+        }
+        else
+        {
+            LoginError.Visibility = Visibility.Visible;
+        }
+    }
+
+    private void Page_Loaded(object sender, RoutedEventArgs e)
+    {
+        if (MadEye.GlobalClasses.GlobalSingletonClass.Instance.isLoggedin == true)
+        {
+            LoginPanel.Visibility = Visibility.Collapsed;
+            ModulesGrid.Visibility = Visibility.Visible;
+        }
+        else
+        {
+            ModulesGrid.Visibility = Visibility.Collapsed;
+        }
+    }
+
+    private void Inpt_Password_PasswordChanged(object sender, RoutedEventArgs e)
+    {
+        LoginError.Visibility = Visibility.Collapsed;
+    }
+
+    private void Inpt_Username_TextChanged(object sender, TextChangedEventArgs e)
+    {
+        LoginError.Visibility = Visibility.Collapsed;
+    }
 }
