@@ -24,6 +24,7 @@ using Windows.Foundation.Collections;
 using Microsoft.Data.Sqlite;
 using Microsoft.UI.Windowing;
 using MadEye.GlobalClasses;
+using CommunityToolkit.WinUI.UI.Controls;
 
 namespace MadEye.Views;
 
@@ -99,6 +100,10 @@ public sealed partial class HomeDetailPage : Page
         {
             HistoryModuleInitialize();
         }
+        if (ClickedModule == 10644)
+        {
+            ScreenshotsModuleInitialize();
+        }
     }
 
     #endregion
@@ -138,6 +143,26 @@ public sealed partial class HomeDetailPage : Page
     private void KeystrokesLoadButton_Click(object sender, RoutedEventArgs e)
     {
         ViewModel.SetKeystrokes();
+    }
+
+    #endregion
+
+
+    #region - Screenshot Module
+
+    public void ScreenshotsModuleInitialize()
+    {
+        ScreenshotsModule.Visibility = Visibility.Visible;
+        ViewModel.ScreenshotsStackContainer = ScreenshotsStackContainer;
+        ViewModel.ScreenshotsLoadButton = ScreenshotsLoadButton;
+
+        ViewModel.GetScreenshots();
+        ViewModel.SetScreenshots();
+    }
+
+    private void ScreenshotsLoadButton_Click(object sender, RoutedEventArgs e)
+    {
+        ViewModel.SetScreenshots();
     }
 
     #endregion

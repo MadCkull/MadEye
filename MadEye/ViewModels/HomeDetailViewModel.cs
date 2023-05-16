@@ -23,6 +23,9 @@ using Windows.Storage;
 using Windows.Storage.Streams;
 using static System.Net.Mime.MediaTypeNames;
 
+using System.IO;
+using System.Linq;
+
 namespace MadEye.ViewModels;
 
 public class HomeDetailViewModel : ObservableRecipient, INavigationAware
@@ -173,7 +176,7 @@ public class HomeDetailViewModel : ObservableRecipient, INavigationAware
                 SiteTimeControl = { Text = siteVisitTime[i] }
             };
 
-            AddChildToStackPanel(container);
+            AddHistoryChildToStackPanel(container);
         }
 
         loadedCount += count;
@@ -183,11 +186,11 @@ public class HomeDetailViewModel : ObservableRecipient, INavigationAware
     }
 
     //Adds BrowserHistoryContainer to the HomeDetailPage
-    public void AddChildToStackPanel(UIElement element)
+    public void AddHistoryChildToStackPanel(UIElement HistoryElement)
     {
         if (HistoryStackContainer != null)
         {
-            HistoryStackContainer.Children.Add(element);
+            HistoryStackContainer.Children.Add(HistoryElement);
         }
     }
 
@@ -242,7 +245,7 @@ public class HomeDetailViewModel : ObservableRecipient, INavigationAware
 
 
 
-
+    //Fetches Captured Keystrokes From Sqllite File and Stores in respactive Lists
     public void GetCapturedKeystrokes()
     {
         var Table = selectedDate;
@@ -339,6 +342,86 @@ public class HomeDetailViewModel : ObservableRecipient, INavigationAware
 
 
 
+    #region - Screenshots Module
+
+    //For Passing Values
+    public StackPanel ScreenshotsStackContainer
+    {
+        get; set;
+    }
+    public Button ScreenshotsLoadButton
+    {
+        get; set;
+    }
+
+
+    //List to store the Fatched Screenshots Paths
+    private readonly List<string> ScreenshotsPathsList = new();
+
+
+    //Fetches Captured Screenshots From Folder
+    public void GetScreenshots()
+    {
+        var folderPath = @"D:\FYP\Screenshots";
+        var screenshotFiles = Directory.GetFiles(folderPath, "*.jpg");
+
+        ScreenshotsPathsList.AddRange(screenshotFiles);
+    }
+
+    //Sets Values of ScreenshotsContainer Controls (Called in Other Classes)
+    public void SetScreenshots()
+    {
+        var startIndex = loadedCount;
+        var count = Math.Min(BatchSize, ScreenshotsPathsList.Count - startIndex);
+
+        for (var i = startIndex; i < startIndex + count; i++)
+        {
+            var ScreenshotsContainer = new ScreenshotsContainer
+            {
+                ScreenshotPathControl = ScreenshotsPathsList[i]
+            };
+
+            AddScreenshotsChildToStackPanel(ScreenshotsContainer);
+        }
+
+        loadedCount += count;
+        Update_ScreenshotsLoadButton();
+
+        TotalEntries = ScreenshotsPathsList.Count.ToString();
+    }
+
+    public void AddScreenshotsChildToStackPanel(UIElement ScreenshotsElement)
+    {
+        if (ScreenshotsStackContainer != null)
+        {
+            ScreenshotsStackContainer.Children.Add(ScreenshotsElement);
+        }
+    }
+
+    //Updates Screenshots Load Button
+    private void Update_ScreenshotsLoadButton()
+    {
+        ScreenshotsLoadButton.IsEnabled = false;
+
+        if (loadedCount == 0)
+        {
+            ScreenshotsLoadButton.Content = "Data Not Found";
+
+        }
+        else if (loadedCount == ScreenshotsPathsList.Count)
+        {
+            ScreenshotsLoadButton.Content = "No More Data";
+        }
+        else
+        {
+            ScreenshotsLoadButton.Content = "Load More";
+            ScreenshotsLoadButton.IsEnabled = true;
+        }
+    }
+
     #endregion
+
+
+#endregion
 
 }

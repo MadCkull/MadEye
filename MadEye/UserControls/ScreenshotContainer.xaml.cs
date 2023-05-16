@@ -12,6 +12,7 @@ using Microsoft.UI.Xaml.Controls.Primitives;
 using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
+using Microsoft.UI.Xaml.Media.Imaging;
 using Microsoft.UI.Xaml.Navigation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
@@ -20,10 +21,23 @@ using Windows.Foundation.Collections;
 // and more about our project templates, see: http://aka.ms/winui-project-info.
 
 namespace MadEye.UserControls;
-public sealed partial class ScreenshotContainer : UserControl
+public sealed partial class ScreenshotsContainer : UserControl
 {
-    public ScreenshotContainer()
+    public ScreenshotsContainer()
     {
         this.InitializeComponent();
     }
+
+
+
+    public string ScreenshotPathControl;
+
+    
+    private void SetScreenshotPath()
+    {
+        Screenshot.Source = new BitmapImage(new Uri(@"D:\FYP\Screenshots\MadEye - 11-51 PM.jpg"));
+    }
+
+
+
 }

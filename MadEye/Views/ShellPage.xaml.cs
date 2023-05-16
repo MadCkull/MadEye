@@ -18,6 +18,9 @@ using MadEye.Core.Models;
 using Windows.UI.Popups;
 using Windows.ApplicationModel.Email;
 using WinUIEx.Messaging;
+using System.ComponentModel.Design;
+using Microsoft.UI.Xaml.Data;
+using Microsoft.UI.Xaml.Media.Imaging;
 
 namespace MadEye.Views;
 
@@ -50,9 +53,8 @@ public sealed partial class ShellPage : Page
         AppTitleBarText.Text = "AppDisplayName".GetLocalized();
 
         App.MainWindow.IsResizable = false;
-        NavigationViewControl.IsPaneOpen = false;
-        Shell_Calender.Visibility = Visibility.Collapsed;
-
+        NavigationViewControl.IsPaneOpen = false; //Closes Navigation Panel
+        Shell_Calender.Visibility = Visibility.Collapsed; //Hides Calander when Navigation Panel is Closed
 
     }
 
@@ -110,6 +112,7 @@ public sealed partial class ShellPage : Page
 
 #region   > User Defined:
 
+    public string Selected_Date = $"{DateTime.Now.Day}\\{DateTime.Now.Month}\\{DateTime.Now.Year}";
 
     private void NavigationViewControl_PaneClosing(NavigationView sender, object args)
     {
@@ -131,10 +134,6 @@ public sealed partial class ShellPage : Page
     {
         Shell_Calender.IsSelected = false;
     }
-
-
-    public string Selected_Date = $"{DateTime.Now.Day}\\{DateTime.Now.Month}\\{DateTime.Now.Year}";
-    
 
 
     private void CalendarView_SelectedDatesChanged(CalendarView sender, CalendarViewSelectedDatesChangedEventArgs args)

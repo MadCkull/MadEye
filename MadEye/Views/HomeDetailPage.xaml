@@ -116,6 +116,29 @@
                     </ScrollViewer>
                     <Button x:Name="KeystrokesLoadButton" Margin="10" Content="Load More" Click="KeystrokesLoadButton_Click" HorizontalAlignment="Center" VerticalAlignment="Top" />
                 </StackPanel>
+                
+                
+                <!-- Shows Captured Screenshots-->
+                <StackPanel 
+                        x:Name="ScreenshotsModule"
+                        Visibility="Collapsed">
+
+                    <ScrollViewer >
+                        <StackPanel
+                        x:Name="ScreenshotsStackContainer"
+                        Margin="10, 10, 10, 10" 
+                        HorizontalAlignment="Stretch" 
+                        Orientation="Horizontal"/>
+                    </ScrollViewer>
+                    
+                    <Button 
+                        x:Name="ScreenshotsLoadButton" 
+                        Margin="10" 
+                        Content="Load More" 
+                        Click="ScreenshotsLoadButton_Click" 
+                        HorizontalAlignment="Center" 
+                        VerticalAlignment="Top" />
+                </StackPanel>
 
 
 

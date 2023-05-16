@@ -14,7 +14,7 @@ public sealed partial class HomePage : Page
     private readonly string Username = "a";
     private readonly string Password = "b";
 
-    private bool isLoggedin = MadEye.GlobalClasses.GlobalSingletonClass.Instance.isLoggedin;
+    private readonly bool isLoggedin = MadEye.GlobalClasses.GlobalSingletonClass.Instance.isLoggedin;
 
 
     public HomeViewModel ViewModel
