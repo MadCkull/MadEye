@@ -9,9 +9,14 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     
-    mc:Ignorable="d">
+    mc:Ignorable="d"
+    
+    PointerPressed="UserControl_PointerPressed"
+    PointerEntered="UserControl_PointerEntered"
+    PointerExited="UserControl_PointerExited">
 
     <Grid
+        x:Name="MainGrid"
         Width="100" 
         Height="92"
         CornerRadius="7"
@@ -23,23 +28,20 @@
             <RowDefinition Height="35"/>
         </Grid.RowDefinitions>
         
-        <Grid
-            Grid.Row="0" >
-            <Image
-                x:Name="Screenshot"
-                
-                Source="D:\FYP\Screenshots\Program Manager - 12-44 PM.jpg"/>
+        <Grid Grid.Row="0" >
+            <Image x:Name="Screenshot" />
         </Grid>
 
         <Grid
-            Grid.Row="1">
+            x:Name="TitleContainer"
+            Grid.Row="1" >
             <TextBlock
                 x:Name="Title"
                 TextWrapping="WrapWholeWords"
                 TextAlignment="Center"
                 FontSize="10"
                 Margin="3"
-                Text="Love overcomes pain. - Google Chrome - 11-54 PM" />
+                Text="Dummy Title" />
         </Grid>
 
     </Grid>

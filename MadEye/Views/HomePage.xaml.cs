@@ -27,6 +27,8 @@ public sealed partial class HomePage : Page
         ViewModel = App.GetService<HomeViewModel>();
         
         InitializeComponent();
+
+        Btn_Login_Click(null, null); //Tmp
     }
 
 
@@ -58,7 +60,8 @@ public sealed partial class HomePage : Page
     
     private void Btn_Login_Click(object sender, RoutedEventArgs e)
     {
-        if (Inpt_Username.Text == Username && Inpt_Password.Password == Password)
+        //if (Inpt_Username.Text == Username && Inpt_Password.Password == Password)
+        if(true)
         {
             LoginPanel.Visibility = Visibility.Collapsed;
             ModulesGrid.Visibility = Visibility.Visible;

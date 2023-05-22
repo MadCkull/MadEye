@@ -25,6 +25,11 @@ using Microsoft.Data.Sqlite;
 using Microsoft.UI.Windowing;
 using MadEye.GlobalClasses;
 using CommunityToolkit.WinUI.UI.Controls;
+using MadEye.UserControls;
+using Microsoft.UI.Xaml.Media.Imaging;
+
+using System;
+using System.Windows;
 
 namespace MadEye.Views;
 
@@ -148,7 +153,10 @@ public sealed partial class HomeDetailPage : Page
     #endregion
 
 
+
     #region - Screenshot Module
+
+
 
     public void ScreenshotsModuleInitialize()
     {
@@ -165,8 +173,20 @@ public sealed partial class HomeDetailPage : Page
         ViewModel.SetScreenshots();
     }
 
-    #endregion
+
+    //Called in ScreenshotsContainer (UserControl) On_Click
+    public void PreviewScreenshot(string PreviewImagePath)
+    {
+        PreviewImage.Source = new BitmapImage(new Uri(PreviewImagePath));
+        ImagePreviewToolTip.IsOpen = true;
+    }
+
+
+
 
     #endregion
+
+#endregion
+
 
 }

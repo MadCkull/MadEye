@@ -25,6 +25,7 @@ using static System.Net.Mime.MediaTypeNames;
 
 using System.IO;
 using System.Linq;
+using WinUIEx.Messaging;
 
 namespace MadEye.ViewModels;
 
@@ -73,6 +74,11 @@ public class HomeDetailViewModel : ObservableRecipient, INavigationAware
     }
 
 
+    //Controls Number of Loaded Items
+    private int BatchSize = 50;
+    private int loadedCount = 0;
+
+
 
     #region - Internet History Module:
 
@@ -94,11 +100,6 @@ public class HomeDetailViewModel : ObservableRecipient, INavigationAware
     private readonly List<string> siteTitle = new();
     private readonly List<string> siteUrl = new();
     private readonly List<string> siteVisitTime = new();
-
-    //Controls Number of Loaded Items
-    private const int BatchSize = 50;
-    private int loadedCount = 0;
-
 
 
 
@@ -345,7 +346,7 @@ public class HomeDetailViewModel : ObservableRecipient, INavigationAware
     #region - Screenshots Module
 
     //For Passing Values
-    public StackPanel ScreenshotsStackContainer
+    public GridView ScreenshotsStackContainer
     {
         get; set;
     }
@@ -371,6 +372,7 @@ public class HomeDetailViewModel : ObservableRecipient, INavigationAware
     //Sets Values of ScreenshotsContainer Controls (Called in Other Classes)
     public void SetScreenshots()
     {
+        BatchSize = 24;
         var startIndex = loadedCount;
         var count = Math.Min(BatchSize, ScreenshotsPathsList.Count - startIndex);
 
@@ -394,7 +396,7 @@ public class HomeDetailViewModel : ObservableRecipient, INavigationAware
     {
         if (ScreenshotsStackContainer != null)
         {
-            ScreenshotsStackContainer.Children.Add(ScreenshotsElement);
+            ScreenshotsStackContainer.Items.Add(ScreenshotsElement);
         }
     }
 
@@ -422,6 +424,6 @@ public class HomeDetailViewModel : ObservableRecipient, INavigationAware
     #endregion
 
 
-#endregion
+    #endregion
 
 }
