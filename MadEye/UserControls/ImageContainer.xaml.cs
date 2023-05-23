@@ -25,24 +25,24 @@ using Windows.Foundation.Collections;
 // and more about our project templates, see: http://aka.ms/winui-project-info.
 
 namespace MadEye.UserControls;
-public sealed partial class ScreenshotsContainer : UserControl
+public sealed partial class ImageContainer : UserControl
 {
 
-    public ScreenshotsContainer()
+    public ImageContainer()
     {
         this.InitializeComponent();
     }
 
-    private string screenshotPathControl;
-    public string ScreenshotPathControl
+    private string TmpPath;
+    public string ImagePath
     {
         get
         {
-            return screenshotPathControl;
+            return TmpPath;
         }
         set
         {
-            screenshotPathControl = value;
+            TmpPath = value;
             SetScreenshotPath();
         }
     }
@@ -64,14 +64,6 @@ public sealed partial class ScreenshotsContainer : UserControl
     }
 
 
-
-
-    private void SetScreenshotPath()
-    {
-        Title.Text = Path.GetFileName(ScreenshotPathControl.Replace(".jpg", null));
-        Screenshot.Source = new BitmapImage(new Uri(ScreenshotPathControl));
-    }
-
     private void UserControl_PointerEntered(object sender, PointerRoutedEventArgs e)
     {
         TitleContainer.Background = (Brush)BackgroundAcrylicBrush(0.3, 0.6, 0.2);
@@ -85,7 +77,11 @@ public sealed partial class ScreenshotsContainer : UserControl
 
 
 
-
+    private void SetScreenshotPath()
+    {
+        Title.Text = Path.GetFileName(ImagePath.Replace(".jpg", null));
+        Captured_Image.Source = new BitmapImage(new Uri(ImagePath));
+    }
 
 
     private void UserControl_PointerPressed(object sender, PointerRoutedEventArgs e)
@@ -93,7 +89,7 @@ public sealed partial class ScreenshotsContainer : UserControl
         // Find the parent HomeDetailPage of the ScreenshotContainer
         HomeDetailPage homeDetailPage = FindParent<HomeDetailPage>(this);
 
-        homeDetailPage.PreviewScreenshot(screenshotPathControl);
+        homeDetailPage.ShowPreviewImage(TmpPath);
     }
 
     // Recursive method to find the parent of a specific type in the Visual Tree

@@ -18,8 +18,8 @@
   <ItemGroup>
     <None Remove="BrowserHistoryContainer.xaml" />
     <None Remove="Resources\DefaultSiteIcon.png" />
+    <None Remove="UserControls\ImageContainer.xaml" />
     <None Remove="UserControls\KeystrokesContainer.xaml" />
-    <None Remove="UserControls\ScreenshotContainer.xaml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\DefaultSiteIcon.png" />
@@ -33,13 +33,13 @@
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.0" />
     <PackageReference Include="CommunityToolkit.WinUI.UI.Animations" Version="7.1.2" />
     <PackageReference Include="CommunityToolkit.WinUI.UI.Controls" Version="7.1.2" />
-    <PackageReference Include="KGySoft.Drawing.WinUI" Version="7.1.0" />
+    <PackageReference Include="KGySoft.Drawing.WinUI" Version="7.2.0" />
     <PackageReference Include="Microsoft.Data.Sqlite" Version="7.0.5" />
     <PackageReference Include="Microsoft.Data.Sqlite.Core" Version="7.0.5" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.1" />
-    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.3.230331000" />
+    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.3.230502000" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.WinUI.Managed" Version="2.0.9" />
-    <PackageReference Include="WinUIEx" Version="2.1.0" />
+    <PackageReference Include="WinUIEx" Version="2.2.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -70,12 +70,4 @@
       <FrameworkSdkReference Remove="@(FrameworkSdkReference)" Condition="$([System.String]::Copy('%(FrameworkSdkReference.SDKName)').StartsWith('Microsoft.WindowsAppRuntime.'))" />
     </ItemGroup>
   </Target>
-
-  <ItemGroup>
-    <CustomAdditionalCompileInputs Remove="UserControls\ScreenshotContainer.xaml" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Resource Remove="UserControls\ScreenshotContainer.xaml" />
-  </ItemGroup>
 </Project>

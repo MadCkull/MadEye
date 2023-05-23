@@ -105,9 +105,9 @@ public sealed partial class HomeDetailPage : Page
         {
             HistoryModuleInitialize();
         }
-        if (ClickedModule == 10644)
+        if (ClickedModule == 10644 || ClickedModule == 10645)
         {
-            ScreenshotsModuleInitialize();
+            CamShotModuleInitialize();
         }
     }
 
@@ -154,28 +154,28 @@ public sealed partial class HomeDetailPage : Page
 
 
 
-    #region - Screenshot Module
+    #region - Screenshot & WebCam Module
 
 
 
-    public void ScreenshotsModuleInitialize()
+    public void CamShotModuleInitialize()
     {
-        ScreenshotsModule.Visibility = Visibility.Visible;
-        ViewModel.ScreenshotsStackContainer = ScreenshotsStackContainer;
-        ViewModel.ScreenshotsLoadButton = ScreenshotsLoadButton;
+        CamShotModule.Visibility = Visibility.Visible;
+        ViewModel.ImageStackContainer = ImageStackContainerUI;
+        ViewModel.ImageLoadButton = ImagesLoadButton;
 
-        ViewModel.GetScreenshots();
-        ViewModel.SetScreenshots();
+        ViewModel.GetImages();
+        ViewModel.SetImages();
     }
 
-    private void ScreenshotsLoadButton_Click(object sender, RoutedEventArgs e)
+    private void ImagesLoadButton_Click(object sender, RoutedEventArgs e)
     {
-        ViewModel.SetScreenshots();
+        ViewModel.SetImages();
     }
 
 
-    //Called in ScreenshotsContainer (UserControl) On_Click
-    public void PreviewScreenshot(string PreviewImagePath)
+    //Called in ImageContainer (UserControl) When Image is Clicked
+    public void ShowPreviewImage(string PreviewImagePath)
     {
         PreviewImage.Source = new BitmapImage(new Uri(PreviewImagePath));
         ImagePreviewToolTip.IsOpen = true;

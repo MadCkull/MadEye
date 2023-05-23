@@ -118,9 +118,9 @@
                 </StackPanel>
                 
                 
-                <!-- Shows Captured Screenshots-->
+                <!-- Shows Captured Screenshots and WebCam Images-->
                 <Grid
-                    x:Name="ScreenshotsModule"
+                    x:Name="CamShotModule"
                     Visibility="Collapsed" >
                     
                     <Grid.RowDefinitions>
@@ -130,7 +130,7 @@
 
                     <ScrollViewer Grid.Row="0" >
                         <GridView 
-                            x:Name="ScreenshotsStackContainer" 
+                            x:Name="ImageStackContainerUI" 
                             Margin="10, 10, 10, 10" 
                             HorizontalAlignment="Stretch"                           
                             
@@ -138,7 +138,7 @@
                             SelectionMode="None" />
                     </ScrollViewer>
 
-                    <Button x:Name="ScreenshotsLoadButton" Grid.Row="1" Content="Load More" Margin="10" Click="ScreenshotsLoadButton_Click" HorizontalAlignment="Center" VerticalAlignment="Top" />
+                    <Button x:Name="ImagesLoadButton" Grid.Row="1" Content="Load More" Margin="10" Click="ImagesLoadButton_Click" HorizontalAlignment="Center" VerticalAlignment="Top" />
                 </Grid>
 
 

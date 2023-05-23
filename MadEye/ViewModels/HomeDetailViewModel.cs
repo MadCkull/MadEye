@@ -343,87 +343,96 @@ public class HomeDetailViewModel : ObservableRecipient, INavigationAware
 
 
 
-    #region - Screenshots Module
+    #region - Screenshots and WebCam Module
 
     //For Passing Values
-    public GridView ScreenshotsStackContainer
+    public GridView ImageStackContainer
     {
         get; set;
     }
-    public Button ScreenshotsLoadButton
+    public Button ImageLoadButton
     {
         get; set;
     }
 
 
     //List to store the Fatched Screenshots Paths
-    private readonly List<string> ScreenshotsPathsList = new();
+    private readonly List<string> ImagesPathsList = new();
 
 
     //Fetches Captured Screenshots From Folder
-    public void GetScreenshots()
+    public void GetImages()
     {
-        var folderPath = @"D:\FYP\Screenshots";
-        var screenshotFiles = Directory.GetFiles(folderPath, "*.jpg");
+        var folderPath = string.Empty;
+        if (MadEye.GlobalClasses.GlobalSingletonClass.Instance.SelectedHomeModuleID == 10644)
+        {
+            folderPath = @"D:\FYP\Screenshots";
+        }
+        else if (MadEye.GlobalClasses.GlobalSingletonClass.Instance.SelectedHomeModuleID == 10645)
+        {
+            folderPath = @"D:\FYP\WebCamImages";
+        }
 
-        ScreenshotsPathsList.AddRange(screenshotFiles);
+        var ImageFiles = Directory.GetFiles(folderPath, "*.jpg");
+
+        ImagesPathsList.AddRange(ImageFiles);
     }
 
-    //Sets Values of ScreenshotsContainer Controls (Called in Other Classes)
-    public void SetScreenshots()
+    //Sets Values of ImageContainer Controls (Called in Other Classes)
+    public void SetImages()
     {
         BatchSize = 24;
         var startIndex = loadedCount;
-        var count = Math.Min(BatchSize, ScreenshotsPathsList.Count - startIndex);
+        var count = Math.Min(BatchSize, ImagesPathsList.Count - startIndex);
 
         for (var i = startIndex; i < startIndex + count; i++)
         {
-            var ScreenshotsContainer = new ScreenshotsContainer
+            var ImageContainer = new ImageContainer
             {
-                ScreenshotPathControl = ScreenshotsPathsList[i]
+                ImagePath = ImagesPathsList[i]
             };
 
-            AddScreenshotsChildToStackPanel(ScreenshotsContainer);
+            AddImageChildToGridView(ImageContainer);
         }
 
         loadedCount += count;
-        Update_ScreenshotsLoadButton();
+        Update_ImagesLoadButton();
 
-        TotalEntries = ScreenshotsPathsList.Count.ToString();
+        TotalEntries = ImagesPathsList.Count.ToString();
     }
 
-    public void AddScreenshotsChildToStackPanel(UIElement ScreenshotsElement)
+    private void AddImageChildToGridView(UIElement ScreenshotsElement)
     {
-        if (ScreenshotsStackContainer != null)
+        if (ImageStackContainer != null)
         {
-            ScreenshotsStackContainer.Items.Add(ScreenshotsElement);
+            ImageStackContainer.Items.Add(ScreenshotsElement);
         }
     }
 
     //Updates Screenshots Load Button
-    private void Update_ScreenshotsLoadButton()
+    private void Update_ImagesLoadButton()
     {
-        ScreenshotsLoadButton.IsEnabled = false;
+        ImageLoadButton.IsEnabled = false;
 
         if (loadedCount == 0)
         {
-            ScreenshotsLoadButton.Content = "Data Not Found";
+            ImageLoadButton.Content = "Data Not Found";
 
         }
-        else if (loadedCount == ScreenshotsPathsList.Count)
+        else if (loadedCount == ImagesPathsList.Count)
         {
-            ScreenshotsLoadButton.Content = "No More Data";
+            ImageLoadButton.Content = "No More Data";
         }
         else
         {
-            ScreenshotsLoadButton.Content = "Load More";
-            ScreenshotsLoadButton.IsEnabled = true;
+            ImageLoadButton.Content = "Load More";
+            ImageLoadButton.IsEnabled = true;
         }
     }
 
     #endregion
 
 
-    #endregion
+#endregion
 
 }
