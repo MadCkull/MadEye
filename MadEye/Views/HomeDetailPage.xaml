@@ -145,8 +145,8 @@
 
 
 
-                <TeachingTip x:Name="ImagePreviewToolTip" PreferredPlacement="Center" PlacementMargin="20" IsLightDismissEnabled="True" Width="700" Height="Auto" MaxWidth="Infinity">
-                    <Image x:Name="PreviewImage"/>
+                <TeachingTip x:Name="ImagePreviewToolTip" PreferredPlacement="Center" PlacementMargin="20" IsLightDismissEnabled="True" Width="700" Height="Auto" MaxWidth="Infinity" >
+                    <Image x:Name="PreviewImage" />
                 </TeachingTip>
 
 

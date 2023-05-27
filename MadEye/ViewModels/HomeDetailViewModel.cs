@@ -26,6 +26,7 @@ using static System.Net.Mime.MediaTypeNames;
 using System.IO;
 using System.Linq;
 using WinUIEx.Messaging;
+using MadEye.GlobalClasses;
 
 namespace MadEye.ViewModels;
 
@@ -83,17 +84,12 @@ public class HomeDetailViewModel : ObservableRecipient, INavigationAware
     #region - Internet History Module:
 
     //For Passing Values
-    public StackPanel HistoryStackContainer
-    {
-        get; set;
-    }
-    public Button HistoryLoadButton
-    {
-        get; set;
-    }
+    public StackPanel HistoryStackContainer { get; set; }
+    public Button HistoryLoadButton { get; set; }
 
     //File Locations
-    private readonly string HistoryFile = @"Data Source=D:\Other\RecServ\InternetHistoryDB";
+    
+    private readonly string HistoryFile = $@"{PathManager.GetInstance().Database}\InternetHistoryDB";
 
     //Lists to store the Fatched Values
     private readonly List<byte[]> siteIcons = new();
@@ -119,44 +115,43 @@ public class HomeDetailViewModel : ObservableRecipient, INavigationAware
 
 
 
-
-
-
     private readonly string selectedDate = ((ShellPage)App.MainWindow.Content).Selected_Date.Replace("\\", "-");
 
     //Fetches History From Sqllite File and Stores in respactive Lists
     public void GetChromeHistory()
     {
-        var Table = selectedDate;
-
-        var ConnectionStr = HistoryFile;
-        using var connection = new SqliteConnection(ConnectionStr);
-
-        connection.Open();
-        using var command = new SqliteCommand($"SELECT name FROM sqlite_master WHERE type='table' AND name='{Table}'", connection);
-        using var reader = command.ExecuteReader();
-        if (reader.Read())
+        if (File.Exists(HistoryFile))
         {
-            var query = $"SELECT Icon, Title, URL, Time FROM '{Table}'";
-            using var command2 = new SqliteCommand(query, connection);
-            using var reader2 = command2.ExecuteReader();
-            while (reader2.Read())
-            {
-                var IconStream = reader2.GetStream(0);
-                byte[] IconBytes;
-                using (var ms = new MemoryStream())
-                {
-                    IconStream.CopyTo(ms);
-                    IconBytes = ms.ToArray();
-                }
-                var title = reader2.GetString(1);
-                var url = reader2.GetString(2);
-                var visitTime = reader2.GetString(3);
+            var Table = selectedDate;
 
-                siteIcons.Add(IconBytes);
-                siteTitle.Add(title);
-                siteUrl.Add(url);
-                siteVisitTime.Add(visitTime);
+            var ConnectionStr = $"Data Source={HistoryFile}";
+            using var connection = new SqliteConnection(ConnectionStr);
+            connection.Open();
+            using var command = new SqliteCommand($"SELECT name FROM sqlite_master WHERE type='table' AND name='{Table}'", connection);
+            using var reader = command.ExecuteReader();
+            if (reader.Read())
+            {
+                var query = $"SELECT Icon, Title, URL, Time FROM '{Table}'";
+                using var command2 = new SqliteCommand(query, connection);
+                using var reader2 = command2.ExecuteReader();
+                while (reader2.Read())
+                {
+                    var IconStream = reader2.GetStream(0);
+                    byte[] IconBytes;
+                    using (var ms = new MemoryStream())
+                    {
+                        IconStream.CopyTo(ms);
+                        IconBytes = ms.ToArray();
+                    }
+                    var title = reader2.GetString(1);
+                    var url = reader2.GetString(2);
+                    var visitTime = reader2.GetString(3);
+
+                    siteIcons.Add(IconBytes);
+                    siteTitle.Add(title);
+                    siteUrl.Add(url);
+                    siteVisitTime.Add(visitTime);
+                }
             }
         }
     }
@@ -225,18 +220,12 @@ public class HomeDetailViewModel : ObservableRecipient, INavigationAware
     #region - Keystrokes Capture Module:
 
     //For Passing Values
-    public StackPanel KeystrokesStackContainer
-    {
-        get; set;
-    }
-    public Button KeystrokesLoadButton
-    {
-        get; set;
-    }
+    public StackPanel KeystrokesStackContainer { get; set; }
+    public Button KeystrokesLoadButton { get; set; }
 
 
     //File Locations
-    private readonly string KeystrokesFile = @"Data Source=D:\Other\RecServ\KeystrokesDB";
+    private readonly string KeystrokesFile = $@"{PathManager.GetInstance().Database}\KeystrokesDB";
 
     //Lists to store the Fatched Values
     //private readonly List<byte[]> WindowIcons = new();
@@ -249,37 +238,42 @@ public class HomeDetailViewModel : ObservableRecipient, INavigationAware
     //Fetches Captured Keystrokes From Sqllite File and Stores in respactive Lists
     public void GetCapturedKeystrokes()
     {
-        var Table = selectedDate;
-
-        var ConnectionStr = KeystrokesFile;
-        using var connection = new SqliteConnection(ConnectionStr);
-
-        connection.Open();
-        using var command = new SqliteCommand($"SELECT name FROM sqlite_master WHERE type='table' AND name='{Table}'", connection);
-        using var reader = command.ExecuteReader();
-        if (reader.Read())
+        if(File.Exists(KeystrokesFile))
         {
-            var query = $"SELECT Title, Content, Time FROM '{Table}' ORDER BY Time DESC";
-            using var command2 = new SqliteCommand(query, connection);
-            using var reader2 = command2.ExecuteReader();
-            while (reader2.Read())
-            {
-                //var IconStream = reader2.GetStream(0);
-                //byte[] IconBytes;
-                //using (var ms = new MemoryStream())
-                //{
-                //    IconStream.CopyTo(ms);
-                //    IconBytes = ms.ToArray();
-                //}
-                var title = reader2.GetString(0);       //1
-                var content = reader2.GetString(1);     //2
-                var captureTime = reader2.GetString(2); //3
+            var Table = selectedDate;
 
-                //WindowIcons.Add(IconBytes);
-                WindowTitle.Add(title);
-                WindowContent.Add(content);
-                WindowCaptureTime.Add(captureTime);
+            var ConnectionStr = $@"Data Source={KeystrokesFile}";
+            using var connection = new SqliteConnection(ConnectionStr);
+
+            connection.Open();
+            using var command = new SqliteCommand($"SELECT name FROM sqlite_master WHERE type='table' AND name='{Table}'", connection);
+            using var reader = command.ExecuteReader();
+            if (reader.Read())
+            {
+                var query = $"SELECT Title, Content, Time FROM '{Table}' ORDER BY Time DESC";
+                using var command2 = new SqliteCommand(query, connection);
+                using var reader2 = command2.ExecuteReader();
+                while (reader2.Read())
+                {
+                    //var IconStream = reader2.GetStream(0);
+                    //byte[] IconBytes;
+                    //using (var ms = new MemoryStream())
+                    //{
+                    //    IconStream.CopyTo(ms);
+                    //    IconBytes = ms.ToArray();
+                    //}
+                    var title = reader2.GetString(0);       //1
+                    var content = reader2.GetString(1);     //2
+                    var captureTime = reader2.GetString(2); //3
+
+                    //WindowIcons.Add(IconBytes);
+                    WindowTitle.Add(title);
+                    WindowContent.Add(content);
+                    WindowCaptureTime.Add(captureTime);
+                }
             }
+
+
         }
     }
 
@@ -363,20 +357,26 @@ public class HomeDetailViewModel : ObservableRecipient, INavigationAware
     //Fetches Captured Screenshots From Folder
     public void GetImages()
     {
+        var InitializedModuleID = MadEye.GlobalClasses.GlobalSingletonClass.Instance.SelectedHomeModuleID;
+        var pathManager = PathManager.GetInstance();
+        pathManager.SelectedDate = ((ShellPage)App.MainWindow.Content).Selected_Date.Replace("\\", "-");
         var folderPath = string.Empty;
-        if (MadEye.GlobalClasses.GlobalSingletonClass.Instance.SelectedHomeModuleID == 10644)
+
+        if (InitializedModuleID == 10644)
         {
-            folderPath = @"D:\FYP\Screenshots";
+            pathManager.CheckFolder(pathManager.ScreenshotsSelectedDateFolder);
+            folderPath = pathManager.ScreenshotsSelectedDateFolder;
         }
-        else if (MadEye.GlobalClasses.GlobalSingletonClass.Instance.SelectedHomeModuleID == 10645)
+        else if (InitializedModuleID == 10645)
         {
-            folderPath = @"D:\FYP\WebCamImages";
+            pathManager.CheckFolder(pathManager.WebCamSelectedDateFolder);
+            folderPath = pathManager.WebCamSelectedDateFolder;
         }
 
-        var ImageFiles = Directory.GetFiles(folderPath, "*.jpg");
-
-        ImagesPathsList.AddRange(ImageFiles);
+        var imageFiles = Directory.GetFiles(folderPath, "*.jpg");
+        ImagesPathsList.AddRange(imageFiles);
     }
+
 
     //Sets Values of ImageContainer Controls (Called in Other Classes)
     public void SetImages()

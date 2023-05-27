@@ -21,6 +21,10 @@ using WinUIEx.Messaging;
 using System.ComponentModel.Design;
 using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Media.Imaging;
+using System.ComponentModel;
+using CommunityToolkit.WinUI.UI;
+using MadEye.GlobalClasses;
+using static System.Net.WebRequestMethods;
 
 namespace MadEye.Views;
 
@@ -39,6 +43,7 @@ public sealed partial class ShellPage : Page
     {
         ViewModel = viewModel;
         InitializeComponent();
+        GetUsers(@"D:\FYP");
 
         ViewModel.NavigationService.Frame = NavigationFrame;
         ViewModel.NavigationViewService.Initialize(NavigationViewControl);
@@ -55,7 +60,10 @@ public sealed partial class ShellPage : Page
         App.MainWindow.IsResizable = false;
         NavigationViewControl.IsPaneOpen = false; //Closes Navigation Panel
         Shell_Calender.Visibility = Visibility.Collapsed; //Hides Calander when Navigation Panel is Closed
+        DataContext = this;  // Enables Users List to be added in ComboBox
 
+
+        
     }
 
     private void OnLoaded(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
@@ -150,7 +158,69 @@ public sealed partial class ShellPage : Page
         Selected_Date = $"{selectedDate.Day}\\{selectedDate.Month}\\{selectedDate.Year}";
     }
 
-#endregion
+
+    public List<string> UserList { get; } = new List<string>();
+
+    public void GetUsers(string directoryPath)
+    {
+
+        if (Directory.Exists(directoryPath))
+        {
+
+
+            
+            string[] folderPaths = Directory.GetDirectories(directoryPath);
+
+            foreach (string folderPath in folderPaths)
+            {
+                string folderName = new DirectoryInfo(folderPath).Name;
+                if (folderName != null)
+                {
+                    UserList.Add(folderName);
+                }
+                else
+                {
+                    UserList.Add("Empty");
+                }
+                
+            }
+        }
+    }
+
+    public string SelectedUser = "DummyUser";
+    private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        ComboBox comboBox = (ComboBox)sender;
+        SelectedUser = comboBox.SelectedItem as string;
+
+        if (SelectedUser != null)
+        {
+            PathManager.GetInstance().UpdateUsername(SelectedUser);
+        }
+    }
+
+
+
+
+    private void ComboBox_Loaded(object sender, RoutedEventArgs e)
+    {
+        ComboBox comboBox = (ComboBox)sender;
+        comboBox.SelectedItem = "DummyUser";
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+    #endregion
 
 
 }
