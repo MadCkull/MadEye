@@ -25,6 +25,7 @@ using System.ComponentModel;
 using CommunityToolkit.WinUI.UI;
 using MadEye.GlobalClasses;
 using static System.Net.WebRequestMethods;
+using System.IO.Compression;
 
 namespace MadEye.Views;
 
@@ -63,7 +64,7 @@ public sealed partial class ShellPage : Page
         DataContext = this;  // Enables Users List to be added in ComboBox
 
 
-        
+        //
     }
 
     private void OnLoaded(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
@@ -163,6 +164,7 @@ public sealed partial class ShellPage : Page
 
     public void GetUsers(string directoryPath)
     {
+        UserList.Clear();
 
         if (Directory.Exists(directoryPath))
         {
@@ -178,14 +180,45 @@ public sealed partial class ShellPage : Page
                 {
                     UserList.Add(folderName);
                 }
-                else
-                {
-                    UserList.Add("Empty");
-                }
                 
             }
         }
     }
+
+
+    private void UpdateUsersData()
+    {
+        var sourceDirectory = @"D:\UserData";
+        var destinationDirectory = PathManager.GetInstance().HomeDirectory;
+
+        var zipFiles = Directory.GetFiles(sourceDirectory, "*.zip");
+
+        if (zipFiles.Length > 0)
+        {
+
+            try
+            {
+                foreach (var zipFile in zipFiles)
+                {
+                    ZipFile.ExtractToDirectory(zipFile, destinationDirectory + Path.GetFileNameWithoutExtension(zipFile), true);
+
+                    System.IO.File.Delete(zipFile);
+                }
+            }
+            catch (Exception)
+            {
+            }
+        }
+
+
+        UserList.Clear();
+
+        GetUsers(@"D:\FYP");
+    }
+
+
+
+
 
     public string SelectedUser = "DummyUser";
     private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -209,6 +242,10 @@ public sealed partial class ShellPage : Page
     }
 
 
+    private void UpdateButton_Click(object sender, RoutedEventArgs e)
+    {
+        UpdateUsersData();
+    }
 
 
 

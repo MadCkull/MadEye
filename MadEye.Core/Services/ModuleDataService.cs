@@ -128,14 +128,14 @@ public class ModuleDataService : ISampleDataService
 
             new MainModules()
             {
-                CompanyName = "File Explorer",
+                CompanyName = "File Logger",
                 Orders = new List<ModuleProperties>()
                 {
                     new ModuleProperties()
                     {
                        ModuleID = 10647, // Used For Navigation
                         SelectedDate = new DateTime(1997, 8, 25),
-                        Module = "File Explorer",
+                        Module = "File Logger",
                         TotalEntries = 814.50,
                         SymbolCode = 57736,
                         SymbolName = "Folder",
@@ -152,14 +152,14 @@ public class ModuleDataService : ISampleDataService
 
             new MainModules()
             {
-                CompanyName = "Files",
+                CompanyName = "Other",
                 Orders = new List<ModuleProperties>()
                 {
                     new ModuleProperties()
                     {
                         ModuleID = 10648, // Used For Navigation (Not Sure)
                         SelectedDate = new DateTime(1997, 8, 25),
-                        Module = "Files",
+                        Module = "Other",
                         TotalEntries = 814.50,
                         SymbolCode = 57699,
                         SymbolName = "Calendar",

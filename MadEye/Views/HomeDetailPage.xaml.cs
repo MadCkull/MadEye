@@ -109,6 +109,10 @@ public sealed partial class HomeDetailPage : Page
         {
             CamShotModuleInitialize();
         }
+        if (ClickedModule == 10647)
+        {
+            FileLoggerModuleInitialize();
+        }
     }
 
     #endregion
@@ -186,7 +190,33 @@ public sealed partial class HomeDetailPage : Page
 
     #endregion
 
-#endregion
+
+    #region - FileLogger Module
+
+
+
+    public void FileLoggerModuleInitialize()
+    {
+        FileLoggerModule.Visibility = Visibility.Visible;
+        ViewModel.FileLogsListView = FileLogsListViewUI;
+        ViewModel.FileLogsLoadButton = FileLogsLoadButton;
+
+        ViewModel.GetLogsFromFile(@"D:\Other\AllLogs.txt");
+        ViewModel.AddFileLogs();
+        
+    }
+
+    private void FileLogsLoadButton_Click(object sender, RoutedEventArgs e)
+    {
+        ViewModel.AddFileLogs();
+    }
+
+
+
+
+    #endregion
+
+    #endregion
 
 
 }

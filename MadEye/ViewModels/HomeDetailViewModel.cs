@@ -84,11 +84,17 @@ public class HomeDetailViewModel : ObservableRecipient, INavigationAware
     #region - Internet History Module:
 
     //For Passing Values
-    public StackPanel HistoryStackContainer { get; set; }
-    public Button HistoryLoadButton { get; set; }
+    public StackPanel HistoryStackContainer
+    {
+        get; set;
+    }
+    public Button HistoryLoadButton
+    {
+        get; set;
+    }
 
     //File Locations
-    
+
     private readonly string HistoryFile = $@"{PathManager.GetInstance().Database}\InternetHistoryDB";
 
     //Lists to store the Fatched Values
@@ -220,8 +226,14 @@ public class HomeDetailViewModel : ObservableRecipient, INavigationAware
     #region - Keystrokes Capture Module:
 
     //For Passing Values
-    public StackPanel KeystrokesStackContainer { get; set; }
-    public Button KeystrokesLoadButton { get; set; }
+    public StackPanel KeystrokesStackContainer
+    {
+        get; set;
+    }
+    public Button KeystrokesLoadButton
+    {
+        get; set;
+    }
 
 
     //File Locations
@@ -238,7 +250,7 @@ public class HomeDetailViewModel : ObservableRecipient, INavigationAware
     //Fetches Captured Keystrokes From Sqllite File and Stores in respactive Lists
     public void GetCapturedKeystrokes()
     {
-        if(File.Exists(KeystrokesFile))
+        if (File.Exists(KeystrokesFile))
         {
             var Table = selectedDate;
 
@@ -289,7 +301,7 @@ public class HomeDetailViewModel : ObservableRecipient, INavigationAware
             var keystrokesContainer = new KeystrokesContainer
             {
                 //WindowIconControl = { ImageSource = SetSiteIcon(i) },
-                WindowTitleControl = { Text =  WindowTitle[i] },
+                WindowTitleControl = { Text = WindowTitle[i] },
                 WindowContentControl = { Text = WindowContent[i] },
                 WindowTimeControl = { Text = WindowCaptureTime[i] }
             };
@@ -433,6 +445,84 @@ public class HomeDetailViewModel : ObservableRecipient, INavigationAware
     #endregion
 
 
-#endregion
+
+    #region - File Logger Module:
+
+    public Button FileLogsLoadButton
+    {
+        get; set;
+    }
+
+    public ListView FileLogsListView { get; set; }
+
+
+    private readonly List<string> FileLogsList = new();
+
+
+
+    public void GetLogsFromFile(string filePath)
+    {
+        try
+        {
+            // Read all lines from the file
+            string[] lines = File.ReadAllLines(filePath);
+
+            // Add each line to the list
+            FileLogsList.AddRange(lines);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"An error occurred while adding files to the list: {ex.Message}");
+            // You can handle the exception as per your requirements
+        }
+    }
+
+    //Sets Values of ImageContainer Controls (Called in Other Classes)
+    public void AddFileLogs()
+    {
+        BatchSize = 50;
+        var startIndex = loadedCount;
+        var count = Math.Min(BatchSize, FileLogsList.Count - startIndex);
+
+        for (var i = startIndex; i < startIndex + count; i++)
+        {
+            FileLogsListView.Items.Add(FileLogsList[i]);
+        }
+
+        loadedCount += count;
+        Update_FileLogsLoadButton();
+
+        TotalEntries = FileLogsList.Count.ToString();
+    }
+
+
+
+
+
+    //Updates FileLogs Load Button
+    private void Update_FileLogsLoadButton()
+    {
+        FileLogsLoadButton.IsEnabled = false;
+
+        if (loadedCount == 0)
+        {
+            FileLogsLoadButton.Content = "Data Not Found";
+
+        }
+        else if (loadedCount == FileLogsList.Count)
+        {
+            FileLogsLoadButton.Content = "No More Data";
+        }
+        else
+        {
+            FileLogsLoadButton.Content = "Load More";
+            FileLogsLoadButton.IsEnabled = true;
+        }
+    }
+
+    #endregion
+
+
+    #endregion
 
 }
