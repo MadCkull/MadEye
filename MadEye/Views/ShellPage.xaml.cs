@@ -26,6 +26,7 @@ using CommunityToolkit.WinUI.UI;
 using MadEye.GlobalClasses;
 using static System.Net.WebRequestMethods;
 using System.IO.Compression;
+using System.Collections.ObjectModel;
 
 namespace MadEye.Views;
 
@@ -44,6 +45,7 @@ public sealed partial class ShellPage : Page
     {
         ViewModel = viewModel;
         InitializeComponent();
+        UserList.Clear();
         GetUsers(@"D:\FYP");
 
         ViewModel.NavigationService.Frame = NavigationFrame;
@@ -61,10 +63,7 @@ public sealed partial class ShellPage : Page
         App.MainWindow.IsResizable = false;
         NavigationViewControl.IsPaneOpen = false; //Closes Navigation Panel
         Shell_Calender.Visibility = Visibility.Collapsed; //Hides Calander when Navigation Panel is Closed
-        DataContext = this;  // Enables Users List to be added in ComboBox
 
-
-        //
     }
 
     private void OnLoaded(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
@@ -160,6 +159,8 @@ public sealed partial class ShellPage : Page
     }
 
 
+
+
     public List<string> UserList { get; } = new List<string>();
 
     public void GetUsers(string directoryPath)
@@ -186,7 +187,7 @@ public sealed partial class ShellPage : Page
     }
 
 
-    private void UpdateUsersData()
+    private void ExtractUserData()
     {
         var sourceDirectory = @"D:\UserData";
         var destinationDirectory = PathManager.GetInstance().HomeDirectory;
@@ -210,10 +211,8 @@ public sealed partial class ShellPage : Page
             }
         }
 
-
-        UserList.Clear();
-
         GetUsers(@"D:\FYP");
+
     }
 
 
@@ -234,18 +233,48 @@ public sealed partial class ShellPage : Page
 
 
 
+    private ObservableCollection<string> userList = new ObservableCollection<string>();
+    private ComboBox loadedComboBox;
 
     private void ComboBox_Loaded(object sender, RoutedEventArgs e)
     {
-        ComboBox comboBox = (ComboBox)sender;
-        comboBox.SelectedItem = "DummyUser";
+        loadedComboBox = (ComboBox)sender;
+        loadedComboBox.ItemsSource = userList;
+        UpdateUsersList();
     }
 
+    private void UpdateUsersList()
+    {
+        // Remove items not in UserList
+        var itemsToRemove = userList.Except(UserList).ToList();
+        foreach (var item in itemsToRemove)
+        {
+            userList.Remove(item);
+        }
+
+        // Add items from UserList
+        var itemsToAdd = UserList.Except(userList).ToList();
+        foreach (var item in itemsToAdd)
+        {
+            userList.Add(item);
+        }
+
+        // Select first item if available
+        if (userList.Count > 0)
+        {
+            loadedComboBox.SelectedItem = userList[0];
+        }
+    }
 
     private void UpdateButton_Click(object sender, RoutedEventArgs e)
     {
-        UpdateUsersData();
+        ExtractUserData();
+        UpdateUsersList();
     }
+
+
+
+
 
 
 

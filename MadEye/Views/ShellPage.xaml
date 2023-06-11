@@ -123,9 +123,12 @@
 
                                     <TextBlock Grid.Column="0" Text="Selected User:" FontSize="17" VerticalAlignment="Center" Margin="0,0,8,6" />
 
-                                    <ComboBox Grid.Column="1" ItemsSource="{Binding DataContext.UserList, ElementName=ShellPageMain}" Width="200" SelectedIndex="1" SelectionChanged="ComboBox_SelectionChanged" Loaded="ComboBox_Loaded" />
+                                    <!-- ComboBox Grid.Column="1" ItemsSource="{Binding DataContext.UserList, ElementName=ShellPageMain}" Width="200" SelectedIndex="1" SelectionChanged="ComboBox_SelectionChanged" Loaded="ComboBox_Loaded" -->
+                                    
+                                    <ComboBox Grid.Column="1" Width="200" SelectedIndex="1" SelectionChanged="ComboBox_SelectionChanged" Loaded="ComboBox_Loaded" />
 
-                                    <Button Grid.Column="2" Click="UpdateButton_Click" Margin="5,0,20,5" Height="30" Width="40">
+                                    
+                                    <Button Grid.Column="2" Click="UpdateButton_Click" Margin="5,0,20,5" Height="30" Width="40" >
                                         <FontIcon FontFamily="Segoe MDL2 Assets" FontSize="12" Glyph="&#xE117;"/>
                                     </Button>
 

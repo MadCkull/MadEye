@@ -10,7 +10,15 @@ using MadEye.Views;
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.UI;
 using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Media;
+using Windows.ApplicationModel.Core;
+using Windows.UI;
+using Windows.UI.ViewManagement;
+using Windows.Graphics.Display;
+using System.Drawing;
 
 namespace MadEye;
 
@@ -95,8 +103,48 @@ public partial class App : Application
 
     protected async override void OnLaunched(LaunchActivatedEventArgs args)
     {
-        base.OnLaunched(args);
 
-        await App.GetService<IActivationService>().ActivateAsync(args);
+       InitializeLoadingPage();
+       await Task.Delay(8000);
+       window.Hide();
+
+
+
+
+       base.OnLaunched(args);
+
+       await App.GetService<IActivationService>().ActivateAsync(args);
+       window.Close();
     }
+
+    private Window window;
+    private void InitializeLoadingPage()
+    {
+        double width = 600;
+        double height = 350;
+
+        double screenWidth = 1600;
+        double screenHeight = 830;
+
+        double xPos = (screenWidth - width) / 2;
+        double yPos = (screenHeight - height) / 2;
+
+
+        window = new Window();
+        window.MoveAndResize(xPos, yPos, width, height);
+        window.ExtendsContentIntoTitleBar = true;
+        window.SetIsAlwaysOnTop(true);
+        window.SetIsResizable(false);
+        window.SetIsMaximizable(false);
+        window.SetIsMinimizable(false);
+        window.SetTitleBarBackgroundColors(Windows.UI.Color.FromArgb(0,1,1,1));
+        window.Title = "";
+        window.SetIcon(Path.Combine(AppContext.BaseDirectory, "Assets/LoadScrIcon.ico"));
+
+        window.Activate();
+
+        var loadingScreen = new LoadingScreen();
+        window.Content = loadingScreen;
+    }
+
 }

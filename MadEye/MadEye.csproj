@@ -16,13 +16,19 @@
     <WindowsAppSDKSelfContained>true</WindowsAppSDKSelfContained>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="Assets\LoadScrIcon.ico" />
+    <None Remove="Assets\LoadScrLogo.png" />
     <None Remove="BrowserHistoryContainer.xaml" />
     <None Remove="Resources\DefaultSiteIcon.png" />
+    <None Remove="Resources\FilesList" />
+    <None Remove="Resources\Slogans" />
     <None Remove="UserControls\ImageContainer.xaml" />
     <None Remove="UserControls\KeystrokesContainer.xaml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\DefaultSiteIcon.png" />
+    <Content Include="Resources\FilesList" />
+    <Content Include="Resources\Slogans" />
   </ItemGroup>
 
   <ItemGroup>
