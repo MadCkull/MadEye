@@ -23,16 +23,16 @@ namespace MadEye
         public LoadingScreen()
         {
             this.InitializeComponent();
-            LoadLogoImage();
+            LoadLogoImage("Assets/LoadScrLogo.png");
             Task.Delay(10000);
             SimulateLoading();
         }
 
 
 
-        private void LoadLogoImage()
+        private void LoadLogoImage(string ImagePath)
         {
-            string imagePath = Path.Combine(AppContext.BaseDirectory, "Assets/LoadScrLogo.png");
+            string imagePath = Path.Combine(AppContext.BaseDirectory, ImagePath);
             Uri imageUri = new Uri(imagePath, UriKind.RelativeOrAbsolute);
             LogoImage.Source = new BitmapImage(imageUri);
         }
@@ -69,10 +69,11 @@ namespace MadEye
 
                 if (i == 90)
                 {
-                    LoadFile.Text = "Almost Completed";
+                    LoadFile.Text = "Almost Completed";                    
                 }
             }
 
+            LoadLogoImage("Assets/LoadScrLogoReady.png");
             LoadFile.Text = "Done!";
             progressBar.ShowPaused = true;
         }

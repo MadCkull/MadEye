@@ -189,29 +189,33 @@ public sealed partial class ShellPage : Page
 
     private void ExtractUserData()
     {
-        var sourceDirectory = @"D:\UserData";
-        var destinationDirectory = PathManager.GetInstance().HomeDirectory;
-
-        var zipFiles = Directory.GetFiles(sourceDirectory, "*.zip");
-
-        if (zipFiles.Length > 0)
+        try
         {
+            var sourceDirectory = @"D:\UserData";
+            var destinationDirectory = PathManager.GetInstance().HomeDirectory;
 
-            try
+            var zipFiles = Directory.GetFiles(sourceDirectory, "*.zip");
+
+            if (zipFiles.Length > 0)
             {
-                foreach (var zipFile in zipFiles)
-                {
-                    ZipFile.ExtractToDirectory(zipFile, destinationDirectory + Path.GetFileNameWithoutExtension(zipFile), true);
 
-                    System.IO.File.Delete(zipFile);
+                try
+                {
+                    foreach (var zipFile in zipFiles)
+                    {
+                        ZipFile.ExtractToDirectory(zipFile, destinationDirectory + Path.GetFileNameWithoutExtension(zipFile), true);
+
+                        System.IO.File.Delete(zipFile);
+                    }
+                }
+                catch (Exception)
+                {
                 }
             }
-            catch (Exception)
-            {
-            }
-        }
 
-        GetUsers(@"D:\FYP");
+            GetUsers(@"D:\FYP");
+        }
+        catch { }
 
     }
 

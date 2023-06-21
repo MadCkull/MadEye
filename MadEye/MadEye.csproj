@@ -18,6 +18,7 @@
   <ItemGroup>
     <None Remove="Assets\LoadScrIcon.ico" />
     <None Remove="Assets\LoadScrLogo.png" />
+    <None Remove="Assets\LoadScrLogoReady.png" />
     <None Remove="BrowserHistoryContainer.xaml" />
     <None Remove="Resources\DefaultSiteIcon.png" />
     <None Remove="Resources\FilesList" />
