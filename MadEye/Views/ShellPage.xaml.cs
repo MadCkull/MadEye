@@ -220,18 +220,41 @@ public sealed partial class ShellPage : Page
     }
 
 
+    private string SelectedUserPath = @"D:\WEB\Tmp\CurrentUser.txt";
+
+    private void WriteLastSelectedUser(string User)
+    {
+        System.IO.File.WriteAllText(SelectedUserPath, User);
+    }
+
+    private string GetLastSelectedUser()
+    {
+        var LastSelectedUser = System.IO.File.ReadAllText(SelectedUserPath);
+
+        return LastSelectedUser;
+    }
 
 
 
-    public string SelectedUser = "DummyUser";
+
+    public string SelectedUser = "No User";
+
+    private int RunCount = 0;
     private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         ComboBox comboBox = (ComboBox)sender;
+
         SelectedUser = comboBox.SelectedItem as string;
+
 
         if (SelectedUser != null)
         {
             PathManager.GetInstance().UpdateUsername(SelectedUser);
+            if (RunCount != 0)
+            {
+                WriteLastSelectedUser(SelectedUser);
+            }
+            RunCount = 1;
         }
     }
 
@@ -263,10 +286,10 @@ public sealed partial class ShellPage : Page
             userList.Add(item);
         }
 
-        // Select first item if available
+        // Selects item if available
         if (userList.Count > 0)
         {
-            loadedComboBox.SelectedItem = userList[0];
+            loadedComboBox.SelectedItem = GetLastSelectedUser();
         }
     }
 
