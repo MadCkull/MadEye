@@ -1,15 +1,17 @@
 # MadEye
-A Keylogger built on WinUI 3 (C#)
+<p>&nbsp&nbsp&nbsp&nbspA Keylogger built on WinUI 3 (C#)</p>
 
 <h2>Overview</h2>
-MadEye is a keylogger project built using WinUI 3 and C#. It is designed to serve as a report viewer. For capturing data I have created the RecServ (A saperate program).
+<p>&nbsp&nbsp&nbspMadEye is a keylogger project built using WinUI 3 and C#. It is designed to serve as a report viewer. For capturing data I have created the RecServ (A saperate program).</p>
 Please note that this project is still in its alpha version and may have several issues.
 
- </h2>Contributing:</h2>
-I welcome contributions from the open-source community to enhance MadEye and RecServ. Please don't hesitate to reach out for more information. Your support is greatly appreciated.
+<h2>Contributing:</h2>
+<p>&nbsp&nbsp&nbsp&nbspI welcome contributions from the open-source community to enhance MadEye and RecServ. Please don't hesitate to reach out for more information. Your support is greatly appreciated.</p>
 
- </h2>Note: </h2>
-For additional information about RecServ, please refer to my repositories.
+<h2>Note:</h2>
+<p>&nbsp&nbsp&nbsp&nbspFor additional information about <a style="text-decoration: none;" href="https://github.com/MadCkull/RecServ">RecServ</a>, please refer to my <a href="https://github.com/MadCkull?tab=repositories">Repositories</a>.</p>
+
+
 
 <img width="960" alt="MainLayout Details" src="https://github.com/MadCkull/MadEye/assets/45617169/b466820c-147f-455c-87f7-1096ea9bb599">
 
